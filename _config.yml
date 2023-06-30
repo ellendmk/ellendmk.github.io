@@ -1,0 +1,29 @@
+title: ellen-loves-data
+markdown: kramdown
+url: ""
+baseurl: "/ellen-loves-data"
+
+# for atom feed
+author:
+  name: Ellen Rudman
+  email: rudman.ellen@gmail.com
+  image: assets/img/ellen.jpg
+  bio: a highly driven human who loves solving complex problems and running marathons
+  github: "sharadcodes"
+
+plugins:
+  - jemoji
+  - jekyll-seo-tag
+  - jekyll-sitemap
+  - jekyll-feed
+
+defaults:
+  - scope:
+      path: ""
+    values:
+      layout: "post"
+  - scope:
+      path: "_posts"
+    values:
+      layout: "post"
+      permalink: /posts/:categories/:year/:month/:day/:title/
