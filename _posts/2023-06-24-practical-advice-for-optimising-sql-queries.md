@@ -3,7 +3,6 @@ layout: post
 title: Practical advice for optimising SQL queries
 date: 2023-06-24
 comments: true
-toc: true
 ---
 
 
