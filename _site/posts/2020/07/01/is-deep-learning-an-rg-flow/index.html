@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ellen-loves-data | Is deep learning an RG flow?</title>
+  <!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Is deep learning an RG flow? | ellen-loves-data</title>
+<meta name="generator" content="Jekyll v4.3.2" />
+<meta property="og:title" content="Is deep learning an RG flow?" />
+<meta name="author" content="Ellen Rudman" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="This post is aimed at exploring some key ideas presented in the paper “Is Deep Learning a Renormalization Group Flow?” which I co-authored with Prof. Robert de Mello Koch and Prof. Ling Cheng." />
+<meta property="og:description" content="This post is aimed at exploring some key ideas presented in the paper “Is Deep Learning a Renormalization Group Flow?” which I co-authored with Prof. Robert de Mello Koch and Prof. Ling Cheng." />
+<link rel="canonical" href="http://localhost:4000/posts/2020/07/01/is-deep-learning-an-rg-flow/" />
+<meta property="og:url" content="http://localhost:4000/posts/2020/07/01/is-deep-learning-an-rg-flow/" />
+<meta property="og:site_name" content="ellen-loves-data" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2020-07-01T21:29:00+01:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Is deep learning an RG flow?" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Ellen Rudman"},"dateModified":"2020-07-01T21:29:00+01:00","datePublished":"2020-07-01T21:29:00+01:00","description":"This post is aimed at exploring some key ideas presented in the paper “Is Deep Learning a Renormalization Group Flow?” which I co-authored with Prof. Robert de Mello Koch and Prof. Ling Cheng.","headline":"Is deep learning an RG flow?","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/posts/2020/07/01/is-deep-learning-an-rg-flow/"},"url":"http://localhost:4000/posts/2020/07/01/is-deep-learning-an-rg-flow/"}</script>
+<!-- End Jekyll SEO tag -->
+
+  <script src="/assets/js/dmode.js"></script>
+  <link rel="stylesheet" href="/assets/css/style.css" />
+</head>
+
+
+<body>
+  <main>
+    <header class="p-page">
+  <a href="/">
+    <h1>
+      ellen-loves-data
+    </h1>
+  </a>
+  <div class="dmode">
+    <img src="/assets/icons/sun.svg" alt="" />
+  </div>
+</header>
+
+    <article>
+
+      <div class="meta">
+        <div id="DivTableOfContentsLink">
+        </div>
+        <h1 class="title">
+          Is deep learning an RG flow?
+        </h1>
+        <small>01 Jul 2020</small>
+      </div>
+      <div class="content">
+        <p>This post is aimed at exploring some key ideas presented in the paper
+<a href="https://arxiv.org/abs/1906.05212#:~:text=Deep%20learning%20performs%20a%20sophisticated,directly%20relevant%20to%20deep%20learning.">“Is Deep
+Learning a Renormalization Group Flow?”</a> which I co-authored
+with Prof. Robert de Mello Koch and Prof. Ling Cheng.</p>
+
+<h1 id="part-1---a-look-into-langle-vh-rangle-correlators">Part 1 - A look into (\langle vh \rangle) correlators</h1>
+<h1 id="what-is-learning">What is learning?</h1>
+<p>Humans are pretty good at learning new things. From the time that we
+are babies we become sponges who soak up (not only lots of food and
+parents energy but) all sorts of information, from learning to walk
+to the way we speak. But how exactly does this learning take place?
+The answer to this question is not well defined.</p>
+
+<p>Deep learning algorithms are inspired by the connections between
+neurons in our brains. These algorithms perform remarkably well
+(often better than our human brains can) at a wide range of tasks.
+But how and why do these networks learn so well? A number of people
+have suggested that deep learning is performing a type of coarse
+graining (averaging out the unimportant information to be left with
+a subset of important information). The renormalization group in
+physics defines a coarse graining scheme which may help in
+understanding deep learning algorithms.</p>
+
+<p>The paper mentioned above looks into this link and develops methods
+to compare the renormalization group (RG) and restricted Boltzmann
+machine (RBM) networks. For this study configurations of the 2D
+Ising model are used as training data. The Ising model is a model of
+a magnet consisting of discrete spins arranged on a square lattice.
+Spins can take values of (\pm 1$. This data is well suited for
+training RBMs because it consists of only two values. Another reason
+why the Ising model is attractive to study stems from the fact that
+neighboring spins are coupled. This is similar to an image where
+nearby pixels will have similar values.</p>
+
+<p>Before we jump into the comparison, let’s review the transformations
+we compare. In a discrete version of RG (variational RG) we average
+blocks of 4 spins to arrive at a coarse grained output spin.
+Locality is thus a key characteristic of this coarse graining
+scheme. When we consider an RBM there is a chance that all input
+nodes will contribute to a single output node. The weights determine
+which inputs will influence a given output. These weights are
+determined during training. It is thus not obvious whether the RBM
+would be performing a coarse graining related to RG but is
+definitely an interesting question to explore. Below very brief
+summaries are given of each transformation. We will start by looking
+at the RBM coarse graining.</p>
+
+<h1 id="rbm-coarse-graining">RBM coarse graining</h1>
+
+<p>An RBM produces a set of output vectors ({\bf h}) given a set of
+input vectors ({\bf v}) using the following equation
+$h_a = \tanh(\sum_i W_{ia} v_i+b_a^{(h)})$
+where the parameters of the model determined by training are</p>
+
+<ul><li>\(b_a^{(h)}\) - the hidden bias and </li>
+    <li>\(W_{ia} \) - the weight matrix.</li>
+</ul>
+<p>The subscripts (i) and (a) refer to specific nodes of a given
+input/output vector.
+Using the trained weights we can get to a set of hidden vectors
+(outputs) from the set of visible (input) training vectors.
+<img style="padding-top: 2em; padding-bottom: 2em; width: 650px;     max-width:100%; margin: 0 auto;left: 50%; top: 50%;" src="/assets/img/dl_as_rg/rbm.png" alt="image" /></p>
+
+<p>As mentioned earlier we train the networks on 2D Ising model
+configurations. Each configuration is a set of values of (\pm 1$
+arranged in a square.
+We transform the configurations from matrices of size ( L_v \times L_v ) into vectors of length ( L_v\times L_v) by concatenating the
+rows as shown in the below image.
+<img style="padding-top: 2em; padding-bottom: 2em; width: 650px;     max-width:100%; margin: 0 auto;" src="/assets/img/dl_as_rg/smaller_finite_concat.webp" alt="image" /></p>
+
+<h1 id="variational-rg-coarse-graining">Variational RG coarse graining</h1>
+
+<p>In variational RG one performs a local average of neighboring spins. RG
+    acts on the original matrix of (\pm 1) values, rather than a vector,
+    as is the case for the RBM. We can represent the RG average as follows
+    (s’<em>{k,j} = \frac{1}{4}(s</em>{k,j}+s_{k+1,j}+s_{k,j+1}+s_{k+1,j+1})$
+    where (s_{i,j}) denotes a spin in the input lattice ($v_i) above)
+    and (s’_{i,j}) denotes a coarse grained spin present in the output
+    lattice ((h_a) above).
+    This averaging is performed on blocks of 4 spins at a time and these
+    blocks do not overlap. Thus each block of 4 spins translates into a
+    single output spin and we have a quarter of the number of input spins in
+    the output. (The RBMs are constructed so they too reduce the input to
+    one quarter of the number of input nodes.)</p>
+
+<div style="text-align:center;">
+    <img style="padding-top: 2em; padding-bottom: 2em; width:
+        450px;max-width:100%;" src="/assets/img/dl_as_rg/rg.png" alt="image" />
+</div>
+
+<h1 id="comparing-rg-and-rbms">Comparing RG and RBMs</h1>
+
+<p>We can see from the equations above that it is not obvious whether these
+two transformations are acting in the same way. We can see that both
+take a linear combination of the inputs to produce an output.</p>
+
+<p>The input/output configurations are arranged in a grid of size
+$L_v\times L_v$/$L_h\times L_h) (where here for ease of explanation
+$L_v=4) and (L_h=2$) spins. From the diagrams above you should have
+noticed that RG acts on these configurations in their original matrix
+form, but the RBM accepts them as a vector.</p>
+
+<p>To probe the transformations we introduce a correlation function between
+the inputs and outputs (where the inputs and outputs are arranged in the
+grid form rather than as vectors). We want to determine which input
+nodes hidden node 1 has learnt are important, which we can phrase as:
+which input nodes are correlated to this output node?
+To calculate the correlation between a given input node and output node
+we use the following
+$\langle v_ih_a \rangle = \frac{1}{N_s} \sum_{k=1}^{N_s}
+v_i^{(k)}h_a^{(k)}$</p>
+
+<p>The correlations are calculated by summing over all pairs of inputs and
+outputs. We label the inputs (v) and outputs (h) using the convention
+below:</p>
+
+<div style="text-align:center;">
+<img style="padding-top: 2em; padding-bottom: 2em; width:
+    200px; max-width:100%; margin: 0 auto;" src="/assets/img/dl_as_rg/vlabels.png" alt="image" />
+<img style="padding-top: 2em; padding-bottom: 2em; width: 200px;
+    max-width:100%; margin: 0 auto;" src="/assets/img/dl_as_rg/hlabels.png" alt="image" />
+</div>
+
+<p>For the inputs and outputs depicted here we have input matrices which
+consists of 16 values and output matrices which consist of 4 values.
+Lets break down the (\langle vh \rangle) sum using some made up
+input/output pairs.</p>
+
+<p>Lets assume we have the following inputs</p>
+<div style="text-align:center;">
+
+<img style="padding-top: 2em; padding-bottom: 2em; width:
+200px;max-width:100%; margin: auto;" src="/assets/img/dl_as_rg/in1.png" alt="image" />
+<img style="padding-top: 2em; padding-bottom: 2em; width:
+200px;max-width:100%; margin: auto;" src="/assets/img/dl_as_rg/in2.png" alt="image" />
+</div>
+
+<p>which are fed through a transformation and produce the following outputs
+(pairs given by the color coding)</p>
+<div style="text-align:center;">
+
+<img style="padding-top: 2em; padding-bottom: 2em; width: 150px;
+max-width:100%;margin: auto;" src="/assets/img/dl_as_rg/out1.png" alt="image" />
+<img style="padding-top: 2em; padding-bottom: 2em; width: 150px;
+max-width:100%;margin: auto;" src="/assets/img/dl_as_rg/out2.png" alt="image" />
+</div>
+
+<p>We calculate the correlator (\langle v_1h_1 \rangle) by taking the
+product of nodes (v_1) and (h_1) for each pair of inputs and outputs. These
+products are averaged so we sum the products and divide by the number of
+input/output pairs (which here is equal to 2 and so we only sum two
+terms per (\langle v_ih_a \rangle$) i.e.</p>
+<div style="text-align:center; padding-top:2em; padding-bottom:2em;">
+<p>
+\(\langle v_1h_1 \rangle = \frac{1}{2}(\)<mark style="background-color: #d0f8d0;">\(v_1 h_1\)</mark> \(+\) <mark style="background-color:#e2d0f8;">\(v_1h_1\)</mark>\( )=
+\frac{1}{2}(\)<mark style="background-color: #d0f8d0;">\(1
+    \times 1\)</mark> \(+\) <mark style="background-color:#e2d0f8;">\(1 \times 1\)</mark>\(
+)=1\)
+</p>
+</div>
+
+<p>For one more example lets look at (\langle v_{16} h_4 \rangle) (The
+bottom left most visible and hidden nodes)</p>
+
+<div style="text-align:center;padding-top:2em; padding-bottom:2em;">
+\(\langle v_{16}h_{4} \rangle = \frac{1}{2}(\)<mark style="background-color: #d0f8d0;">\(v_{16} h_4\)</mark> \(+\)
+<mark style="background-color:#e2d0f8;">\(v_{16}h_{4}\)</mark>\(
+)= \frac{1}{2}(\)<mark style="background-color: #d0f8d0;">\(1
+    \times -1\)</mark> \(+\) <mark style="background-color:#e2d0f8;">\(-1 \times -1\)</mark>\(
+)=0\)
+</div>
+
+<p>For each output node we obtain a grid of values which is the same size
+as the input. Here we see an image of what would be the (\langle
+v_i h_1 \rangle) correlators. For the inputs/outputs shown above we would
+get 4 matrices of values (because we have 4 hidden nodes) just like the
+one shown below.</p>
+
+<div style="text-align:center;">
+<img style="padding-top: 2em; padding-bottom: 2em; width:
+350px;max-width:100%; margin: auto;" src="/assets/img/dl_as_rg/vhlabeled.png" alt="image" />
+
+<img style="padding-top: 2em; padding-bottom: 2em; width: 200px;max-width:100%; margin: auto;" src="/assets/img/dl_as_rg/vh_set.png" alt="image" />
+</div>
+<p><br /></p>
+
+<p>Great! So now we can encode the patterns of thousands of input and output
+pairs into a neat statistical measure of (\langle vh \rangle$. Each
+hidden node now has a matrix of (\langle vh \rangle) values associated
+with it. These values tell us important information about which input
+nodes each hidden node is correlated to. But we may still have hundreds
+of these matrices to understand depending on the number of hidden nodes
+in the transformation.</p>
+
+<p>Below are examples of the (\langle vh \rangle) patterns we observe in
+each coarse graining scheme. The dark patches show a patch where the
+given hidden node is highly correlated to input nodes. We need a way to
+quantify similarities between the schemes. To do this we use spatial
+correlators.</p>
+
+<p><img style="max-width:48%;" src="/assets/img/dl_as_rg/1024_256_flows_tanh_freq_grid.png" />
+<img style="max-width: 48%;" src="/assets/img/dl_as_rg/1024_256_rg_freq_grid.png" /></p>
+
+      </div>
+      <div>
+
+        
+        <div id="disqus_thread"></div>
+<script>
+    /**
+    *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+    *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables    */
+    /*
+    var disqus_config = function () {
+    this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+    this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+    };
+    */
+    (function() { // DON'T EDIT BELOW THIS LINE
+    var d = document, s = d.createElement('script');
+    s.src = 'https://https-ellendmk-github-io.disqus.com/embed.js';
+    s.setAttribute('data-timestamp', +new Date());
+    (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+        
+      </div>
+    </article>
+    <footer>
+  <p>
+  </p>
+</footer>
+<script src="/assets/js/lbox.js"></script>
+<script>
+  dload()
+</script>
+<script type="text/javascript"
+  src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+  </main>
+  <!-- <-- IMPORTANT: Replace EXAMPLE with your forum shortname! -->
+  <script id="dsq-count-scr" src="//ellenlovesdata.disqus.com/count.js" async></script>
+</body>
+
+</html>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+      inlineMath: [['\\(','\\)'], ['$', '$']]
+    }
+  });
+</script>
+<script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
+
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>

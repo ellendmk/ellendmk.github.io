@@ -1,0 +1,400 @@
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.3.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2023-07-05T19:30:56+01:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">ellen-loves-data</title><author><name>Ellen Rudman</name><email>rudman.ellen@gmail.com</email></author><entry><title type="html">Taking the confusion out of confusion matrices</title><link href="http://localhost:4000/posts/2023/07/03/taking-the-confusion-out-of-confusion-matrices/" rel="alternate" type="text/html" title="Taking the confusion out of confusion matrices" /><published>2023-07-03T21:29:00+01:00</published><updated>2023-07-03T21:29:00+01:00</updated><id>http://localhost:4000/posts/2023/07/03/taking-the-confusion-out-of-confusion-matrices</id><content type="html" xml:base="http://localhost:4000/posts/2023/07/03/taking-the-confusion-out-of-confusion-matrices/">&lt;p&gt;Confusion matrices can at times be confusing and so can all the metrics that go along with them. Here we’ll try to break down intuitively what their purpose is and what each of the metrics mean.&lt;/p&gt;
+
+&lt;h1 id=&quot;why-do-we-need-confusion-matrices&quot;&gt;Why do we need confusion matrices?&lt;/h1&gt;
+
+&lt;p&gt;Confusion matrices are a useful way to summarize model performance when dealing with classification tasks. Not only do they apply to the binary classification task but can also be used when dealing with more than two classes.&lt;/p&gt;
+
+&lt;p&gt;You might be thinking &lt;em&gt;we have a simple way to evaluate model performance already - lets see how accurate our predictions are? What proportion of our predicted labels match the actual labels?&lt;/em&gt; Lets look at an example to understand why accuracy is not always a great metric.&lt;/p&gt;
+
+&lt;p&gt;We have a dataset made up of 100 cricket players from UK cricket clubs. Our target variable is a boolean value &lt;em&gt;opening_batsman&lt;/em&gt;  which indicates if a player is an opener (1) or isn’t (0). Our target is only 5 % of our data (meaning 5 of the 100 players in our data are opening batsmen).&lt;/p&gt;
+
+&lt;p&gt;If we predict all players are &lt;em&gt;not&lt;/em&gt; opening batsmen our accuracy would be 95% because just by predicting everything as our dominant class (not an opening batsman) we get 95 % of labels correct. 95 % sounds great but if we were hoping to identify new up and coming opening batsmen this would not work at all and our accuracy measure is giving the wrong impression. Here the class we actually care about getting right (even though its only 5 % of all labels) are when players are an opening batsman.&lt;/p&gt;
+
+&lt;p&gt;A confusion matrix allows us to dig deeper into our results and look at each target class to judge performance.&lt;/p&gt;
+
+&lt;h1 id=&quot;what-is-a-confusion-matrix&quot;&gt;What is a confusion matrix?&lt;/h1&gt;
+
+&lt;p&gt;Lets look at a slightly smaller dataset below where only the target variable is shown. Each block represents a labeled sample with orange for &lt;em&gt;opening_batsman&lt;/em&gt; \(=1\) and blue for &lt;em&gt;opening_batsman&lt;/em&gt; \(=0\). This is shown by the first row of blocks below.&lt;/p&gt;
+
+&lt;p&gt;We’ve built a model that predicts the class for the below samples and this is given in the second row of blocks. Correct classifications have a white tick and misclassifications a black cross.&lt;/p&gt;
+
+&lt;div style=&quot;text-align: center;&quot;&gt;
+&lt;img src=&quot;/assets/img/samples.png&quot; alt=&quot;drawing&quot; style=&quot;height: 100px; object-fit: scale-down;padding-bottom:-40px;padding-left:10px;&quot; /&gt;
+
+
+&lt;img src=&quot;/assets/img/predictions.png&quot; alt=&quot;drawing&quot; style=&quot;height:100px;object-fit: scale-down;padding-top:-100px;&quot; /&gt;
+     &lt;div class=&quot;caption&quot; style=&quot;text-align:justify;&quot;&gt;&lt;b&gt;Figure 1:&lt;/b&gt; Top: actual labels (orange meaning opening_batsman = 1 and blue meaning opening_batsman = 0). Bottom: predicted labels (ticks in white show correct classifications and black crosses show misclassifications.).&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;h2 id=&quot;constructing-the-matrix&quot;&gt;Constructing the matrix&lt;/h2&gt;
+
+&lt;p&gt;To construct a confusion matrix we have a matrix with predictions as our rows and actual labels as our columns. In each case labels can take values of positive (1 = opening batsman) and negative (0 = not an opening batsman). Each sample will have an actual label and a predicted label and by summing up how many lie in each block we get a 4x4 matrix as shown below.&lt;/p&gt;
+
+&lt;table style=&quot;max-width:900px; text-align:center;&quot;&gt;
+&lt;tr&gt;
+     &lt;td style=&quot;border-bottom-style: hidden;border-top-style: hidden;border-left-style: hidden;&quot;&gt;&lt;/td&gt;
+     &lt;td style=&quot;border-bottom-style: hidden;border-top-style: hidden;border-left-style: hidden;&quot;&gt;&lt;/td&gt;
+     &lt;td colspan=&quot;2&quot;&gt; Actual  &lt;/td&gt;
+     &lt;td style=&quot;border-top-style: hidden;border-right-style: hidden;&quot;&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+     &lt;td style=&quot;border-top-style: hidden;border-left-style: hidden;&quot;&gt;&lt;/td&gt;
+     &lt;td style=&quot;border-top-style: hidden;border-left-style: hidden;&quot;&gt;  &lt;/td&gt;
+     &lt;td&gt; 1 &lt;/td&gt;
+     &lt;td&gt;0&lt;/td&gt;
+     &lt;td&gt; Predicted totals&lt;/td&gt;
+
+&lt;/tr&gt;
+
+&lt;tr&gt;
+     &lt;td rowspan=&quot;2&quot; style=&quot;center&quot;&gt;Predicted&lt;/td&gt;
+     &lt;td&gt;1&lt;/td&gt;
+     &lt;td&gt; 3 &lt;br /&gt;  &lt;img src=&quot;/assets/img/tp.png&quot; alt=&quot;drawing&quot; style=&quot;width:50px;border:0&quot; /&gt; &lt;br /&gt;  True positives &lt;br /&gt;(TP) &lt;/td&gt;
+     &lt;td&gt; 4 &lt;br /&gt; &lt;img src=&quot;/assets/img/fp.png&quot; alt=&quot;drawing&quot; style=&quot;width:50px;border:0&quot; /&gt; &lt;br /&gt; False positives (FP)  &lt;/td&gt;
+     &lt;td&gt; 7&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+     &lt;td&gt;0&lt;/td&gt;
+     &lt;td&gt; 3&lt;br /&gt;&lt;img src=&quot;/assets/img/fn.png&quot; alt=&quot;&quot; style=&quot;width:50px;border:0;&quot; /&gt; &lt;br /&gt; False negatives (FN) &lt;/td&gt;
+     &lt;td&gt; 8&lt;br /&gt;&lt;img src=&quot;/assets/img/tn.png&quot; alt=&quot;&quot; style=&quot;width:50px;border:0;&quot; /&gt; &lt;br /&gt; True negatives (TN) &lt;/td&gt;
+     &lt;td&gt; 11&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&quot;border-bottom-style: hidden;border-left-style: hidden;&quot;&gt;&lt;/td&gt;
+     &lt;td&gt;Actual Totals&lt;/td&gt;
+     &lt;td&gt; 6 &lt;/td&gt;
+     &lt;td&gt; 12 &lt;/td&gt;
+     &lt;td&gt;18&lt;/td&gt;
+
+&lt;/tr&gt;
+&lt;/table&gt;
+
+&lt;p&gt;The terminology we use to label each block of the confusion matrix is either true or false (is our prediction correct i.e. true or incorrect i.e. false) followed by what our prediction was (positive i.e. 1 or negative i.e. 0).&lt;/p&gt;
+
+&lt;h2 id=&quot;accuracy-from-the-diagonal&quot;&gt;Accuracy from the diagonal&lt;/h2&gt;
+
+&lt;p&gt;The diagonal of a confusion matrix tells us about the correct classifications our model made. Summing these and dividing by the total number of samples will give us the accuracy measure we discussed above. For this dataset we have \(3+8=11\) out of 18 predictions that are correct giving us an accuracy of \(11/18 = 57.9\%\).&lt;/p&gt;
+
+&lt;p&gt;But we already mentioned that we care more about the performance of our model for predicting a label of 1.&lt;/p&gt;
+
+&lt;h2 id=&quot;how-good-are-we-at-predicting-opening_batsman--1&quot;&gt;How good are we at predicting &lt;em&gt;opening_batsman&lt;/em&gt; \(= 1\)?&lt;/h2&gt;
+
+&lt;p&gt;There are a few intuitive measures to consider when quantifying how well our model performs when looking at a specific class&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;How good are we at finding actual opening batsmen?&lt;/li&gt;
+  &lt;li&gt;How often are our predictions correct of who an opening batsmen?&lt;/li&gt;
+  &lt;li&gt;A measure that combines the above two metrics: the ability to find real labels as well as have a high hit rate amongst predictions.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h4 id=&quot;1-recall-how-good-are-we-at-finding-actual-opening-batsmen&quot;&gt;1. Recall: How good are we at finding actual opening batsmen?&lt;/h4&gt;
+&lt;p&gt;For the first point we could think of this as trying to see how many actual opening_batsman = 1 labels we managed to catch. This we can get with the ratio between the number of correct predictions for opening_batsman = 1  (TP) and all the actual opening_batsman = 1 labels (TP+FN). This measure is called recall and gives ua an idea of well we can recall the ground truth of our underlying data. Recall has the below formula&lt;/p&gt;
+
+\[R=\frac{TP}{TP+FN}\]
+
+&lt;p&gt;In this case we get a recall value of&lt;/p&gt;
+
+\[R = \frac{3}{3+3}=0.5\]
+
+&lt;h4 id=&quot;2-precision-how-often-are-our-predictions-correct-of-who-an-opening-batsmen-is&quot;&gt;2. Precision: How often are our predictions correct of who an opening batsmen is?&lt;/h4&gt;
+
+&lt;p&gt;For the second point we are trying to understand how often our positive predictions are actually correct. For this we again need our correct opening_batsman = 1 (TP) as the numerator but for our denominator we now need all predictions where opening_batsman = 1 regardless of whether they were correct or not (TP+FP). This measure tells us how precise we are at predicting and is called precision. The formula is given by&lt;/p&gt;
+
+\[P = \frac{TP}{TP+FP}\]
+
+&lt;p&gt;In this case we get a precision of&lt;/p&gt;
+
+\[P = \frac{3}{3+4}=0.429\]
+
+&lt;h4 id=&quot;3-combining-precision-and-recall-into-a-single-metric-with-the-harmonic-mean&quot;&gt;3. Combining precision and recall into a single metric with the harmonic mean&lt;/h4&gt;
+
+&lt;p&gt;If we have two models and we’re trying to determine which one is better at predicting opening batsman but one has a better precision an the other a better recall it may get tricky trying to decide which one to use. What we need now is a sensible way of combining these two metrics into a single measure.&lt;/p&gt;
+
+&lt;p&gt;A measure exists that combines precision and recall by taking the harmonic mean. This is called the F1-score. So this sounds like some sort of fancy average of the two metrics.&lt;/p&gt;
+
+&lt;p&gt;To find the harmonic mean we must find the reciprocal of the arithmetic mean of reciprocals which is given by&lt;/p&gt;
+
+\[\frac{1}{H} = \frac{\frac{1}{P}+\frac{1}{R}}{2}\]
+
+\[H = \frac{2PR}{P+R}\]
+
+&lt;p&gt;We know values of precision and recall will fall between 0 and 1 and we can plot what the harmonic mean of these values would be&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/img/f1-score.png&quot; alt=&quot;drawing&quot; style=&quot;width:500px;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;The harmonic mean gives us a way of balancing the effects of each individual metric without being penalized for one being very low. It gives us a nonlinear combination which better captures the trade-off between the two metrics and allows us to easily compare two models.&lt;/p&gt;</content><author><name>Ellen Rudman</name><email>rudman.ellen@gmail.com</email></author><summary type="html">Confusion matrices can at times be confusing and so can all the metrics that go along with them. Here we’ll try to break down intuitively what their purpose is and what each of the metrics mean.</summary></entry><entry><title type="html">Practical advice for optimising SQL queries</title><link href="http://localhost:4000/posts/2023/06/24/practical-advice-for-optimising-sql-queries/" rel="alternate" type="text/html" title="Practical advice for optimising SQL queries" /><published>2023-06-24T00:00:00+01:00</published><updated>2023-06-24T00:00:00+01:00</updated><id>http://localhost:4000/posts/2023/06/24/practical-advice-for-optimising-sql-queries</id><content type="html" xml:base="http://localhost:4000/posts/2023/06/24/practical-advice-for-optimising-sql-queries/">&lt;p&gt;SQL optimizations can save oodles of time and they are really intuitive and easy to identify once you know what to look for.&lt;/p&gt;
+
+&lt;h1 id=&quot;practical-advice-for-optimizing-sql-queries&quot;&gt;Practical advice for optimizing SQL queries&lt;/h1&gt;
+
+&lt;p&gt;Optimizing SQL queries comes down to two simple principles&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Use as little data as necessary&lt;/li&gt;
+  &lt;li&gt;Limit how many times you need to perform any operation&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;I’ll break down these tips into subsections so they’ll be easy to skim through.&lt;/p&gt;
+
+&lt;h2 id=&quot;use-as-little-data-as-necessary&quot;&gt;Use as little data as necessary&lt;/h2&gt;
+
+&lt;p&gt;Earlier in your query rather than later you should restrict the tables to the filters you are interested in be it dates, a subset of humans or particular records.&lt;/p&gt;
+
+&lt;p&gt;For example if we had the below query&lt;/p&gt;
+
+&lt;div class=&quot;language-sql highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;with&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;CTE&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;as&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;select&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;col1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;col2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;col3&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;date1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;date2&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;table1&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+&lt;span class=&quot;p&quot;&gt;...&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;select&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;cola&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;colb&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;col1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;col2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; 
+    &lt;span class=&quot;n&quot;&gt;col3&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;date1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;date2&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;CTE3&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;where&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;GETDATE&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;between&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;date1&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;and&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;date2&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;it would be better to apply the filter to the first CTE as it might be used as a base for other CTEs and we’ll be loading and performing operations on more data than necessary.&lt;/p&gt;
+
+&lt;div class=&quot;language-sql highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;with&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;CTE&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;as&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;select&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;col1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;col2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;col3&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;date1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;date2&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;table1&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;where&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;GETDATE&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;between&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;date1&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;and&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;date2&lt;/span&gt;
+
+&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+&lt;span class=&quot;p&quot;&gt;...&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;select&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;cola&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;colb&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;col1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;col2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; 
+    &lt;span class=&quot;n&quot;&gt;col3&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;date1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;date2&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;CTE3&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;avoid-computation-within-joins&quot;&gt;Avoid computation within joins&lt;/h2&gt;
+
+&lt;h2 id=&quot;include-conditions-in-joins-rather-than-in-where-conditions&quot;&gt;Include conditions in joins rather than in where conditions&lt;/h2&gt;
+
+&lt;h2 id=&quot;avoid-distinct-and-group-by&quot;&gt;Avoid distinct and group by&lt;/h2&gt;
+
+&lt;h2 id=&quot;avoid-computations-within-a-case-when&quot;&gt;Avoid computations within a case when&lt;/h2&gt;
+
+&lt;h2 id=&quot;where-to-practice-what-youve-learnt&quot;&gt;Where to practice what you’ve learnt?&lt;/h2&gt;</content><author><name>Ellen Rudman</name><email>rudman.ellen@gmail.com</email></author><summary type="html">SQL optimizations can save oodles of time and they are really intuitive and easy to identify once you know what to look for.</summary></entry><entry><title type="html">Is deep learning an RG flow?</title><link href="http://localhost:4000/posts/2020/07/01/is-deep-learning-an-rg-flow/" rel="alternate" type="text/html" title="Is deep learning an RG flow?" /><published>2020-07-01T21:29:00+01:00</published><updated>2020-07-01T21:29:00+01:00</updated><id>http://localhost:4000/posts/2020/07/01/is-deep-learning-an-rg-flow</id><content type="html" xml:base="http://localhost:4000/posts/2020/07/01/is-deep-learning-an-rg-flow/">&lt;p&gt;This post is aimed at exploring some key ideas presented in the paper
+&lt;a href=&quot;https://arxiv.org/abs/1906.05212#:~:text=Deep%20learning%20performs%20a%20sophisticated,directly%20relevant%20to%20deep%20learning.&quot;&gt;“Is Deep
+Learning a Renormalization Group Flow?”&lt;/a&gt; which I co-authored
+with Prof. Robert de Mello Koch and Prof. Ling Cheng.&lt;/p&gt;
+
+&lt;h1 id=&quot;part-1---a-look-into-langle-vh-rangle-correlators&quot;&gt;Part 1 - A look into (\langle vh \rangle) correlators&lt;/h1&gt;
+&lt;h1 id=&quot;what-is-learning&quot;&gt;What is learning?&lt;/h1&gt;
+&lt;p&gt;Humans are pretty good at learning new things. From the time that we
+are babies we become sponges who soak up (not only lots of food and
+parents energy but) all sorts of information, from learning to walk
+to the way we speak. But how exactly does this learning take place?
+The answer to this question is not well defined.&lt;/p&gt;
+
+&lt;p&gt;Deep learning algorithms are inspired by the connections between
+neurons in our brains. These algorithms perform remarkably well
+(often better than our human brains can) at a wide range of tasks.
+But how and why do these networks learn so well? A number of people
+have suggested that deep learning is performing a type of coarse
+graining (averaging out the unimportant information to be left with
+a subset of important information). The renormalization group in
+physics defines a coarse graining scheme which may help in
+understanding deep learning algorithms.&lt;/p&gt;
+
+&lt;p&gt;The paper mentioned above looks into this link and develops methods
+to compare the renormalization group (RG) and restricted Boltzmann
+machine (RBM) networks. For this study configurations of the 2D
+Ising model are used as training data. The Ising model is a model of
+a magnet consisting of discrete spins arranged on a square lattice.
+Spins can take values of (\pm 1$. This data is well suited for
+training RBMs because it consists of only two values. Another reason
+why the Ising model is attractive to study stems from the fact that
+neighboring spins are coupled. This is similar to an image where
+nearby pixels will have similar values.&lt;/p&gt;
+
+&lt;p&gt;Before we jump into the comparison, let’s review the transformations
+we compare. In a discrete version of RG (variational RG) we average
+blocks of 4 spins to arrive at a coarse grained output spin.
+Locality is thus a key characteristic of this coarse graining
+scheme. When we consider an RBM there is a chance that all input
+nodes will contribute to a single output node. The weights determine
+which inputs will influence a given output. These weights are
+determined during training. It is thus not obvious whether the RBM
+would be performing a coarse graining related to RG but is
+definitely an interesting question to explore. Below very brief
+summaries are given of each transformation. We will start by looking
+at the RBM coarse graining.&lt;/p&gt;
+
+&lt;h1 id=&quot;rbm-coarse-graining&quot;&gt;RBM coarse graining&lt;/h1&gt;
+
+&lt;p&gt;An RBM produces a set of output vectors ({\bf h}) given a set of
+input vectors ({\bf v}) using the following equation
+$h_a = \tanh(\sum_i W_{ia} v_i+b_a^{(h)})$
+where the parameters of the model determined by training are&lt;/p&gt;
+
+&lt;ul&gt;&lt;li&gt;\(b_a^{(h)}\) - the hidden bias and &lt;/li&gt;
+    &lt;li&gt;\(W_{ia} \) - the weight matrix.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;The subscripts (i) and (a) refer to specific nodes of a given
+input/output vector.
+Using the trained weights we can get to a set of hidden vectors
+(outputs) from the set of visible (input) training vectors.
+&lt;img style=&quot;padding-top: 2em; padding-bottom: 2em; width: 650px;     max-width:100%; margin: 0 auto;left: 50%; top: 50%;&quot; src=&quot;/assets/img/dl_as_rg/rbm.png&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;As mentioned earlier we train the networks on 2D Ising model
+configurations. Each configuration is a set of values of (\pm 1$
+arranged in a square.
+We transform the configurations from matrices of size ( L_v \times L_v ) into vectors of length ( L_v\times L_v) by concatenating the
+rows as shown in the below image.
+&lt;img style=&quot;padding-top: 2em; padding-bottom: 2em; width: 650px;     max-width:100%; margin: 0 auto;&quot; src=&quot;/assets/img/dl_as_rg/smaller_finite_concat.webp&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
+
+&lt;h1 id=&quot;variational-rg-coarse-graining&quot;&gt;Variational RG coarse graining&lt;/h1&gt;
+
+&lt;p&gt;In variational RG one performs a local average of neighboring spins. RG
+    acts on the original matrix of (\pm 1) values, rather than a vector,
+    as is the case for the RBM. We can represent the RG average as follows
+    (s’&lt;em&gt;{k,j} = \frac{1}{4}(s&lt;/em&gt;{k,j}+s_{k+1,j}+s_{k,j+1}+s_{k+1,j+1})$
+    where (s_{i,j}) denotes a spin in the input lattice ($v_i) above)
+    and (s’_{i,j}) denotes a coarse grained spin present in the output
+    lattice ((h_a) above).
+    This averaging is performed on blocks of 4 spins at a time and these
+    blocks do not overlap. Thus each block of 4 spins translates into a
+    single output spin and we have a quarter of the number of input spins in
+    the output. (The RBMs are constructed so they too reduce the input to
+    one quarter of the number of input nodes.)&lt;/p&gt;
+
+&lt;div style=&quot;text-align:center;&quot;&gt;
+    &lt;img style=&quot;padding-top: 2em; padding-bottom: 2em; width:
+        450px;max-width:100%;&quot; src=&quot;/assets/img/dl_as_rg/rg.png&quot; alt=&quot;image&quot; /&gt;
+&lt;/div&gt;
+
+&lt;h1 id=&quot;comparing-rg-and-rbms&quot;&gt;Comparing RG and RBMs&lt;/h1&gt;
+
+&lt;p&gt;We can see from the equations above that it is not obvious whether these
+two transformations are acting in the same way. We can see that both
+take a linear combination of the inputs to produce an output.&lt;/p&gt;
+
+&lt;p&gt;The input/output configurations are arranged in a grid of size
+$L_v\times L_v$/$L_h\times L_h) (where here for ease of explanation
+$L_v=4) and (L_h=2$) spins. From the diagrams above you should have
+noticed that RG acts on these configurations in their original matrix
+form, but the RBM accepts them as a vector.&lt;/p&gt;
+
+&lt;p&gt;To probe the transformations we introduce a correlation function between
+the inputs and outputs (where the inputs and outputs are arranged in the
+grid form rather than as vectors). We want to determine which input
+nodes hidden node 1 has learnt are important, which we can phrase as:
+which input nodes are correlated to this output node?
+To calculate the correlation between a given input node and output node
+we use the following
+$\langle v_ih_a \rangle = \frac{1}{N_s} \sum_{k=1}^{N_s}
+v_i^{(k)}h_a^{(k)}$&lt;/p&gt;
+
+&lt;p&gt;The correlations are calculated by summing over all pairs of inputs and
+outputs. We label the inputs (v) and outputs (h) using the convention
+below:&lt;/p&gt;
+
+&lt;div style=&quot;text-align:center;&quot;&gt;
+&lt;img style=&quot;padding-top: 2em; padding-bottom: 2em; width:
+    200px; max-width:100%; margin: 0 auto;&quot; src=&quot;/assets/img/dl_as_rg/vlabels.png&quot; alt=&quot;image&quot; /&gt;
+&lt;img style=&quot;padding-top: 2em; padding-bottom: 2em; width: 200px;
+    max-width:100%; margin: 0 auto;&quot; src=&quot;/assets/img/dl_as_rg/hlabels.png&quot; alt=&quot;image&quot; /&gt;
+&lt;/div&gt;
+
+&lt;p&gt;For the inputs and outputs depicted here we have input matrices which
+consists of 16 values and output matrices which consist of 4 values.
+Lets break down the (\langle vh \rangle) sum using some made up
+input/output pairs.&lt;/p&gt;
+
+&lt;p&gt;Lets assume we have the following inputs&lt;/p&gt;
+&lt;div style=&quot;text-align:center;&quot;&gt;
+
+&lt;img style=&quot;padding-top: 2em; padding-bottom: 2em; width:
+200px;max-width:100%; margin: auto;&quot; src=&quot;/assets/img/dl_as_rg/in1.png&quot; alt=&quot;image&quot; /&gt;
+&lt;img style=&quot;padding-top: 2em; padding-bottom: 2em; width:
+200px;max-width:100%; margin: auto;&quot; src=&quot;/assets/img/dl_as_rg/in2.png&quot; alt=&quot;image&quot; /&gt;
+&lt;/div&gt;
+
+&lt;p&gt;which are fed through a transformation and produce the following outputs
+(pairs given by the color coding)&lt;/p&gt;
+&lt;div style=&quot;text-align:center;&quot;&gt;
+
+&lt;img style=&quot;padding-top: 2em; padding-bottom: 2em; width: 150px;
+max-width:100%;margin: auto;&quot; src=&quot;/assets/img/dl_as_rg/out1.png&quot; alt=&quot;image&quot; /&gt;
+&lt;img style=&quot;padding-top: 2em; padding-bottom: 2em; width: 150px;
+max-width:100%;margin: auto;&quot; src=&quot;/assets/img/dl_as_rg/out2.png&quot; alt=&quot;image&quot; /&gt;
+&lt;/div&gt;
+
+&lt;p&gt;We calculate the correlator (\langle v_1h_1 \rangle) by taking the
+product of nodes (v_1) and (h_1) for each pair of inputs and outputs. These
+products are averaged so we sum the products and divide by the number of
+input/output pairs (which here is equal to 2 and so we only sum two
+terms per (\langle v_ih_a \rangle$) i.e.&lt;/p&gt;
+&lt;div style=&quot;text-align:center; padding-top:2em; padding-bottom:2em;&quot;&gt;
+&lt;p&gt;
+\(\langle v_1h_1 \rangle = \frac{1}{2}(\)&lt;mark style=&quot;background-color: #d0f8d0;&quot;&gt;\(v_1 h_1\)&lt;/mark&gt; \(+\) &lt;mark style=&quot;background-color:#e2d0f8;&quot;&gt;\(v_1h_1\)&lt;/mark&gt;\( )=
+\frac{1}{2}(\)&lt;mark style=&quot;background-color: #d0f8d0;&quot;&gt;\(1
+    \times 1\)&lt;/mark&gt; \(+\) &lt;mark style=&quot;background-color:#e2d0f8;&quot;&gt;\(1 \times 1\)&lt;/mark&gt;\(
+)=1\)
+&lt;/p&gt;
+&lt;/div&gt;
+
+&lt;p&gt;For one more example lets look at (\langle v_{16} h_4 \rangle) (The
+bottom left most visible and hidden nodes)&lt;/p&gt;
+
+&lt;div style=&quot;text-align:center;padding-top:2em; padding-bottom:2em;&quot;&gt;
+\(\langle v_{16}h_{4} \rangle = \frac{1}{2}(\)&lt;mark style=&quot;background-color: #d0f8d0;&quot;&gt;\(v_{16} h_4\)&lt;/mark&gt; \(+\)
+&lt;mark style=&quot;background-color:#e2d0f8;&quot;&gt;\(v_{16}h_{4}\)&lt;/mark&gt;\(
+)= \frac{1}{2}(\)&lt;mark style=&quot;background-color: #d0f8d0;&quot;&gt;\(1
+    \times -1\)&lt;/mark&gt; \(+\) &lt;mark style=&quot;background-color:#e2d0f8;&quot;&gt;\(-1 \times -1\)&lt;/mark&gt;\(
+)=0\)
+&lt;/div&gt;
+
+&lt;p&gt;For each output node we obtain a grid of values which is the same size
+as the input. Here we see an image of what would be the (\langle
+v_i h_1 \rangle) correlators. For the inputs/outputs shown above we would
+get 4 matrices of values (because we have 4 hidden nodes) just like the
+one shown below.&lt;/p&gt;
+
+&lt;div style=&quot;text-align:center;&quot;&gt;
+&lt;img style=&quot;padding-top: 2em; padding-bottom: 2em; width:
+350px;max-width:100%; margin: auto;&quot; src=&quot;/assets/img/dl_as_rg/vhlabeled.png&quot; alt=&quot;image&quot; /&gt;
+
+&lt;img style=&quot;padding-top: 2em; padding-bottom: 2em; width: 200px;max-width:100%; margin: auto;&quot; src=&quot;/assets/img/dl_as_rg/vh_set.png&quot; alt=&quot;image&quot; /&gt;
+&lt;/div&gt;
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;p&gt;Great! So now we can encode the patterns of thousands of input and output
+pairs into a neat statistical measure of (\langle vh \rangle$. Each
+hidden node now has a matrix of (\langle vh \rangle) values associated
+with it. These values tell us important information about which input
+nodes each hidden node is correlated to. But we may still have hundreds
+of these matrices to understand depending on the number of hidden nodes
+in the transformation.&lt;/p&gt;
+
+&lt;p&gt;Below are examples of the (\langle vh \rangle) patterns we observe in
+each coarse graining scheme. The dark patches show a patch where the
+given hidden node is highly correlated to input nodes. We need a way to
+quantify similarities between the schemes. To do this we use spatial
+correlators.&lt;/p&gt;
+
+&lt;p&gt;&lt;img style=&quot;max-width:48%;&quot; src=&quot;/assets/img/dl_as_rg/1024_256_flows_tanh_freq_grid.png&quot; /&gt;
+&lt;img style=&quot;max-width: 48%;&quot; src=&quot;/assets/img/dl_as_rg/1024_256_rg_freq_grid.png&quot; /&gt;&lt;/p&gt;</content><author><name>Ellen Rudman</name><email>rudman.ellen@gmail.com</email></author><summary type="html">This post is aimed at exploring some key ideas presented in the paper “Is Deep Learning a Renormalization Group Flow?” which I co-authored with Prof. Robert de Mello Koch and Prof. Ling Cheng.</summary></entry></feed>
