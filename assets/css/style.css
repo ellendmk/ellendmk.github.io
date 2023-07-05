@@ -513,6 +513,10 @@ article .meta {
   animation: spin 0.4s linear;
 }
 
+.darkmode table td{
+  border: 1px solid white;
+}
+
 @-moz-keyframes spin {
   100% {
     -moz-transform: rotate(45deg);
@@ -568,3 +572,63 @@ article .meta {
   background-color: black;
   border: 2px solid white;
 }
+
+
+
+.toc__list:before {
+  content: "Table Of Contents";
+  font-weight: bold;
+  font-size: 1.5rem;
+ }
+ 
+ @media (min-width: 1350px) {
+#DivTableOfContentsLink {
+  width: 300px;
+  position: fixed;
+  left: 20px;
+  top: 20px;
+}
+ }
+ .toc-link {    
+  position:fixed;
+  top:0;
+  width:100%;
+  background-color:#fff;
+}
+
+ .toc__list {
+  position: sticky;
+  border: 2px solid #eee;
+  border-radius: 4px;
+  line-height: 1.8rem;
+  padding: 1rem 1.5rem;
+  font-weight: 600;
+  list-style-type: None;
+ }
+ 
+ .toc__sublist li {
+  padding-left: 1rem;
+ }
+ 
+ .toc-h2:first-child {
+  margin-top: 1rem;
+ }  
+ 
+ #toc a {
+  color: #2782cd;
+  text-decoration: underline;
+ }
+ 
+ #toc a:hover {
+  color: #2782cd;
+ }
+
+
+ .darkmode  #toc a {
+  color: #2782cd;
+  text-decoration: underline;
+ }
+ 
+ .darkmode #toc a:hover {
+  color: #2782cd;
+ }
