@@ -3,6 +3,7 @@ layout: post
 toc: true
 title: Taking the confusion out of confusion matrices
 date: 2023-07-03 20:29:00
+comments: true
 ---
 
 Confusion matrices can at times be confusing and so can all the metrics that go along with them. Here we'll try to break down intuitively what their purpose is and what each of the metrics mean.
