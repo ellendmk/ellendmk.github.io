@@ -108,7 +108,7 @@ two transformations are acting in the same way. We can see that both
 take a linear combination of the inputs to produce an output.
 
 The input/output configurations are arranged in a grid of size
-$L_v\times L_v$/$L_h\times L_h\) (where here for ease fo explanation
+$L_v\times L_v$/$L_h\times L_h\) (where here for ease of explanation
 $L_v=4\) and \(L_h=2$) spins. From the diagrams above you should have
 noticed that RG acts on these configurations in their original matrix
 form, but the RBM accepts them as a vector.
@@ -149,7 +149,7 @@ Lets assume we have the following inputs
 </div>
 
 which are fed through a transformation and produce the following outputs
-(pairs given by the colour coding)
+(pairs given by the color coding)
 <div style='text-align:center;'>
 
 <img style="padding-top: 2em; padding-bottom: 2em; width: 150px;
