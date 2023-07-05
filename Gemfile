@@ -10,6 +10,6 @@ gem "github-pages"
 
 gem "jekyll-feed", "~> 0.13.0"
 
-gem 'jekyll-toc'
+# gem 'jekyll-toc'
 
  gem 'wdm', '>= 0.1.0' if Gem.win_platform?
