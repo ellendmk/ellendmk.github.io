@@ -576,14 +576,14 @@ article .meta {
 
 
 .toc__list:before {
-  content: "Table Of Contents";
+  content: "On this page";
   font-weight: bold;
   font-size: 1.5rem;
  }
  
  @media (min-width: 1350px) {
 #DivTableOfContentsLink {
-  width: 300px;
+  width: 23%;
   position: fixed;
   left: 20px;
   top: 20px;
