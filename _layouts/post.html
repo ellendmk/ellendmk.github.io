@@ -1,11 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
   {% include head.html %}
+
   <body>
     <main>
       {% include post_header.html %}
       <article>
+    
         <div class="meta">
+          <div id="DivTableOfContentsLink">
+            {% toc %}
+            </div>
           <h1 class="title">
             {{page.title}}
           </h1>
@@ -19,3 +24,6 @@
     </main>
   </body>
 </html>
+<script type="text/javascript"
+  src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
