@@ -1,6 +1,6 @@
 ---
 layout: post
-toc: true
+comments: true
 title: Taking the confusion out of confusion matrices
 date: 2023-07-03 20:29:00
 ---
