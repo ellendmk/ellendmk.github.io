@@ -2,7 +2,6 @@
 layout: post
 title: Is deep learning an RG flow?
 date: 2020-07-01 20:29:00
-toc: true
 comments: true
 ---
 
