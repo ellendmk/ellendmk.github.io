@@ -16,14 +16,14 @@ plugins:
   - jekyll-seo-tag
   - jekyll-sitemap
   - jekyll-feed
-  - jekyll-toc
+#   - jekyll-toc
 
-toc:
-  min_level: 1
-  max_level: 5
-  list_class: toc
-  list_class: toc__list
-  sublist_class: toc__sublist
+# toc:
+#   min_level: 1
+#   max_level: 5
+#   list_class: toc
+#   list_class: toc__list
+#   sublist_class: toc__sublist
 
 defaults:
   - scope:
