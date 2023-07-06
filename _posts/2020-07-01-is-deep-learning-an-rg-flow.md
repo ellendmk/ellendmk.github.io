@@ -91,16 +91,16 @@ In variational RG one performs a local average of neighboring spins. RG
 acts on the original matrix of $ \pm 1 $ values, rather than a vector,
 as is the case for the RBM. We can represent the RG average as follows
 
-$ s'_{k,j} = \frac{1}{4}(s_{k,j}+s_{k+1,j}+s_{k,j+1}+s_{k+1,j+1}) $
+\(s'_{k,j} = \frac{1}{4}(s_{k,j}+s_{k+1,j}+s_{k,j+1}+s_{k+1,j+1})\)
 
-    where $s_{i,j}$ denotes a spin in the input lattice ($v_i$ above)
-    and $s'_{i,j}$ denotes a coarse grained spin present in the output
-    lattice ($h_a$ above).
-    This averaging is performed on blocks of 4 spins at a time and these
-    blocks do not overlap. Thus each block of 4 spins translates into a
-    single output spin and we have a quarter of the number of input spins in
-    the output. (The RBMs are constructed so they too reduce the input to
-    one quarter of the number of input nodes.)
+where $s_{i,j}$ denotes a spin in the input lattice ($v_i$ above)
+and $s'_{i,j}$ denotes a coarse grained spin present in the output
+lattice ($h_a$ above).
+This averaging is performed on blocks of 4 spins at a time and these
+blocks do not overlap. Thus each block of 4 spins translates into a
+single output spin and we have a quarter of the number of input spins in
+the output. (The RBMs are constructed so they too reduce the input to
+one quarter of the number of input nodes.)
 
 <div style='text-align:center;'>
     <img style="padding-top: 2em; padding-bottom: 2em; width:
