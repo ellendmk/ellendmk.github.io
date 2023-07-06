@@ -54,8 +54,6 @@
       <div class="content">
         <p>SQL optimizations can save oodles of time and they are really intuitive and easy to identify once you know what to look for.</p>
 
-<h1 id="practical-advice-for-optimizing-sql-queries">Practical advice for optimizing SQL queries</h1>
-
 <p>Optimizing SQL queries comes down to two simple principles</p>
 
 <ol>
@@ -67,64 +65,43 @@
 
 <h2 id="use-as-little-data-as-necessary">Use as little data as necessary</h2>
 
-<p>Earlier in your query rather than later you should restrict the tables to the filters you are interested in be it dates, a subset of humans or particular records.</p>
-
-<p>For example if we had the below query</p>
-
-<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">with</span> <span class="n">CTE</span> <span class="k">as</span> <span class="p">(</span>
-<span class="k">select</span> <span class="n">col1</span><span class="p">,</span>
-    <span class="n">col2</span><span class="p">,</span>
-    <span class="n">col3</span><span class="p">,</span>
-    <span class="n">date1</span><span class="p">,</span>
-    <span class="n">date2</span>
-<span class="k">from</span> <span class="n">table1</span>
-<span class="p">)</span>
-
-<span class="p">...</span>
-
-<span class="k">select</span> <span class="n">cola</span><span class="p">,</span>
-    <span class="n">colb</span><span class="p">,</span>
-    <span class="n">col1</span><span class="p">,</span>
-    <span class="n">col2</span><span class="p">,</span> 
-    <span class="n">col3</span><span class="p">,</span>
-    <span class="n">date1</span><span class="p">,</span>
-    <span class="n">date2</span>
-<span class="k">from</span> <span class="n">CTE3</span>
-<span class="k">where</span> <span class="n">GETDATE</span><span class="p">()</span> <span class="k">between</span> <span class="n">date1</span> <span class="k">and</span> <span class="n">date2</span>
-</code></pre></div></div>
-
-<p>it would be better to apply the filter to the first CTE as it might be used as a base for other CTEs and we’ll be loading and performing operations on more data than necessary.</p>
-
-<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">with</span> <span class="n">CTE</span> <span class="k">as</span> <span class="p">(</span>
-<span class="k">select</span> <span class="n">col1</span><span class="p">,</span>
-    <span class="n">col2</span><span class="p">,</span>
-    <span class="n">col3</span><span class="p">,</span>
-    <span class="n">date1</span><span class="p">,</span>
-    <span class="n">date2</span>
-<span class="k">from</span> <span class="n">table1</span>
-<span class="k">where</span> <span class="n">GETDATE</span><span class="p">()</span> <span class="k">between</span> <span class="n">date1</span> <span class="k">and</span> <span class="n">date2</span>
-
-<span class="p">)</span>
-
-<span class="p">...</span>
-
-<span class="k">select</span> <span class="n">cola</span><span class="p">,</span>
-    <span class="n">colb</span><span class="p">,</span>
-    <span class="n">col1</span><span class="p">,</span>
-    <span class="n">col2</span><span class="p">,</span> 
-    <span class="n">col3</span><span class="p">,</span>
-    <span class="n">date1</span><span class="p">,</span>
-    <span class="n">date2</span>
-<span class="k">from</span> <span class="n">CTE3</span>
-</code></pre></div></div>
+<p>Restrict the tables to the filtered data you are interested in earlier rather than later. Less joins and less operations on rows we don’t need will give better performance.</p>
 
 <h2 id="avoid-computation-within-joins">Avoid computation within joins</h2>
 
+<p>Rather create a new column in relevant tables before joining than performing computations in the join condition. Each time a record is checked against another there will be additional unnecessary computations. By including a column in the tables being joined you limit this to one computation per entry.</p>
+
 <h2 id="include-conditions-in-joins-rather-than-in-where-conditions">Include conditions in joins rather than in where conditions</h2>
+
+<p>Join conditions are executed before where conditions. Applying filters within a where will result in all records first being joined before the filtering happens. By including lal filters in the where you limit the number of joins that need to occur.</p>
 
 <h2 id="avoid-distinct-and-group-by">Avoid distinct and group by</h2>
 
-<h2 id="avoid-computations-within-a-case-when">Avoid computations within a case when</h2>
+<p>Always ensure you are performing the correct join on only the necessary rows rather than using a distinct or group by. Only use these operations when aggregating or when completely necessary.</p>
+
+<h2 id="avoid-computations-and-aggregations-within-a-case-when">Avoid computations and aggregations within a case when</h2>
+
+<p>Including computations/aggregations within a case when condition may result in the computation/aggregation being computed multiple times. For example if we have</p>
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="p">...</span>
+    <span class="k">CASE</span> <span class="k">WHEN</span> <span class="k">SUM</span><span class="p">(</span><span class="n">TOTAL</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">100</span> <span class="k">then</span> <span class="k">SUM</span><span class="p">(</span><span class="n">TOTAL</span><span class="p">)</span> 
+        <span class="k">ELSE</span> <span class="mi">100</span> 
+    <span class="k">END</span> <span class="k">AS</span> <span class="n">TOTAL_SUM</span>
+</code></pre></div></div>
+
+<p>the condition requires the aggregation of <em>TOTAL</em> and if the condition is true we need to perform the aggregation a second time.</p>
+
+<p>Including this as a column in an intermediate step would be better where we could then just rely on the column values rather than an aggregation within the condition checks.</p>
+
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="p">...</span>
+    <span class="k">CASE</span> <span class="k">WHEN</span> <span class="n">TOTAL_SUM</span> <span class="o">&lt;</span> <span class="mi">100</span> <span class="k">then</span> <span class="n">TOTAL_SUM</span> 
+        <span class="k">ELSE</span> <span class="mi">100</span> 
+    <span class="k">END</span> <span class="k">AS</span> <span class="n">TOTAL_SUM</span>
+    <span class="k">FROM</span> <span class="p">(</span>
+        <span class="k">SELECT</span> <span class="k">SUM</span><span class="p">(</span><span class="n">TOTAL</span><span class="p">)</span> <span class="k">as</span> <span class="n">TOTAL_SUM</span><span class="p">,</span> <span class="c1">--aggregate before using within a condition</span>
+            <span class="p">...</span>
+    <span class="p">)</span>
+    <span class="p">...</span>
+</code></pre></div></div>
 
 <h2 id="where-to-practice-what-youve-learnt">Where to practice what you’ve learnt?</h2>
 

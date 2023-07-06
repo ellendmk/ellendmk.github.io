@@ -10,7 +10,6 @@ toc: true
 SQL optimizations can save oodles of time and they are really intuitive and easy to identify once you know what to look for.
 
 
-# Practical advice for optimizing SQL queries
 
 Optimizing SQL queries comes down to two simple principles
 
@@ -22,67 +21,45 @@ I'll break down these tips into subsections so they'll be easy to skim through.
 
 ## Use as little data as necessary
 
-Earlier in your query rather than later you should restrict the tables to the filters you are interested in be it dates, a subset of humans or particular records.
-
-For example if we had the below query
-
-~~~~sql
-with CTE as (
-select col1,
-    col2,
-    col3,
-    date1,
-    date2
-from table1
-)
-
-...
-
-select cola,
-    colb,
-    col1,
-    col2, 
-    col3,
-    date1,
-    date2
-from CTE3
-where GETDATE() between date1 and date2
-~~~~
-
-it would be better to apply the filter to the first CTE as it might be used as a base for other CTEs and we'll be loading and performing operations on more data than necessary.
-
-~~~~sql
-with CTE as (
-select col1,
-    col2,
-    col3,
-    date1,
-    date2
-from table1
-where GETDATE() between date1 and date2
-
-)
-
-...
-
-select cola,
-    colb,
-    col1,
-    col2, 
-    col3,
-    date1,
-    date2
-from CTE3
-~~~~
-
+Restrict the tables to the filtered data you are interested in earlier rather than later. Less joins and less operations on rows we don't need will give better performance.
 
 ## Avoid computation within joins
 
+Rather create a new column in relevant tables before joining than performing computations in the join condition. Each time a record is checked against another there will be additional unnecessary computations. By including a column in the tables being joined you limit this to one computation per entry.
+
 ## Include conditions in joins rather than in where conditions
+
+Join conditions are executed before where conditions. Applying filters within a where will result in all records first being joined before the filtering happens. By including lal filters in the where you limit the number of joins that need to occur.
 
 ## Avoid distinct and group by
 
-## Avoid computations within a case when
+Always ensure you are performing the correct join on only the necessary rows rather than using a distinct or group by. Only use these operations when aggregating or when completely necessary.
+
+## Avoid computations and aggregations within a case when
+
+Including computations/aggregations within a case when condition may result in the computation/aggregation being computed multiple times. For example if we have
+~~~~sql
+    ...
+    CASE WHEN SUM(TOTAL) < 100 then SUM(TOTAL) 
+        ELSE 100 
+    END AS TOTAL_SUM
+~~~~
+
+the condition requires the aggregation of _TOTAL_ and if the condition is true we need to perform the aggregation a second time.
+
+Including this as a column in an intermediate step would be better where we could then just rely on the column values rather than an aggregation within the condition checks.
+
+~~~~sql
+    ...
+    CASE WHEN TOTAL_SUM < 100 then TOTAL_SUM 
+        ELSE 100 
+    END AS TOTAL_SUM
+    FROM (
+        SELECT SUM(TOTAL) as TOTAL_SUM, --aggregate before using within a condition
+            ...
+    )
+    ...
+~~~~
 
 ## Where to practice what you've learnt?
 

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.3.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2023-07-05T19:30:56+01:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">ellen-loves-data</title><author><name>Ellen Rudman</name><email>rudman.ellen@gmail.com</email></author><entry><title type="html">Taking the confusion out of confusion matrices</title><link href="http://localhost:4000/posts/2023/07/03/taking-the-confusion-out-of-confusion-matrices/" rel="alternate" type="text/html" title="Taking the confusion out of confusion matrices" /><published>2023-07-03T21:29:00+01:00</published><updated>2023-07-03T21:29:00+01:00</updated><id>http://localhost:4000/posts/2023/07/03/taking-the-confusion-out-of-confusion-matrices</id><content type="html" xml:base="http://localhost:4000/posts/2023/07/03/taking-the-confusion-out-of-confusion-matrices/">&lt;p&gt;Confusion matrices can at times be confusing and so can all the metrics that go along with them. Here we’ll try to break down intuitively what their purpose is and what each of the metrics mean.&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.3.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2023-07-06T15:08:04+01:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">ellen-loves-data</title><author><name>Ellen Rudman</name><email>rudman.ellen@gmail.com</email></author><entry><title type="html">Taking the confusion out of confusion matrices</title><link href="http://localhost:4000/posts/2023/07/03/taking-the-confusion-out-of-confusion-matrices/" rel="alternate" type="text/html" title="Taking the confusion out of confusion matrices" /><published>2023-07-03T21:29:00+01:00</published><updated>2023-07-03T21:29:00+01:00</updated><id>http://localhost:4000/posts/2023/07/03/taking-the-confusion-out-of-confusion-matrices</id><content type="html" xml:base="http://localhost:4000/posts/2023/07/03/taking-the-confusion-out-of-confusion-matrices/">&lt;p&gt;Confusion matrices can at times be confusing and so can all the metrics that go along with them. Here we’ll try to break down intuitively what their purpose is and what each of the metrics mean.&lt;/p&gt;
 
 &lt;h1 id=&quot;why-do-we-need-confusion-matrices&quot;&gt;Why do we need confusion matrices?&lt;/h1&gt;
 
@@ -124,8 +124,6 @@
 
 &lt;p&gt;The harmonic mean gives us a way of balancing the effects of each individual metric without being penalized for one being very low. It gives us a nonlinear combination which better captures the trade-off between the two metrics and allows us to easily compare two models.&lt;/p&gt;</content><author><name>Ellen Rudman</name><email>rudman.ellen@gmail.com</email></author><summary type="html">Confusion matrices can at times be confusing and so can all the metrics that go along with them. Here we’ll try to break down intuitively what their purpose is and what each of the metrics mean.</summary></entry><entry><title type="html">Practical advice for optimising SQL queries</title><link href="http://localhost:4000/posts/2023/06/24/practical-advice-for-optimising-sql-queries/" rel="alternate" type="text/html" title="Practical advice for optimising SQL queries" /><published>2023-06-24T00:00:00+01:00</published><updated>2023-06-24T00:00:00+01:00</updated><id>http://localhost:4000/posts/2023/06/24/practical-advice-for-optimising-sql-queries</id><content type="html" xml:base="http://localhost:4000/posts/2023/06/24/practical-advice-for-optimising-sql-queries/">&lt;p&gt;SQL optimizations can save oodles of time and they are really intuitive and easy to identify once you know what to look for.&lt;/p&gt;
 
-&lt;h1 id=&quot;practical-advice-for-optimizing-sql-queries&quot;&gt;Practical advice for optimizing SQL queries&lt;/h1&gt;
-
 &lt;p&gt;Optimizing SQL queries comes down to two simple principles&lt;/p&gt;
 
 &lt;ol&gt;
@@ -137,64 +135,43 @@
 
 &lt;h2 id=&quot;use-as-little-data-as-necessary&quot;&gt;Use as little data as necessary&lt;/h2&gt;
 
-&lt;p&gt;Earlier in your query rather than later you should restrict the tables to the filters you are interested in be it dates, a subset of humans or particular records.&lt;/p&gt;
-
-&lt;p&gt;For example if we had the below query&lt;/p&gt;
-
-&lt;div class=&quot;language-sql highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;with&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;CTE&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;as&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;select&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;col1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;col2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;col3&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;date1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;date2&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;table1&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-
-&lt;span class=&quot;p&quot;&gt;...&lt;/span&gt;
-
-&lt;span class=&quot;k&quot;&gt;select&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;cola&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;colb&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;col1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;col2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; 
-    &lt;span class=&quot;n&quot;&gt;col3&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;date1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;date2&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;CTE3&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;where&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;GETDATE&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;between&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;date1&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;and&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;date2&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;it would be better to apply the filter to the first CTE as it might be used as a base for other CTEs and we’ll be loading and performing operations on more data than necessary.&lt;/p&gt;
-
-&lt;div class=&quot;language-sql highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;with&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;CTE&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;as&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;select&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;col1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;col2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;col3&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;date1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;date2&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;table1&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;where&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;GETDATE&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;between&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;date1&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;and&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;date2&lt;/span&gt;
-
-&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-
-&lt;span class=&quot;p&quot;&gt;...&lt;/span&gt;
-
-&lt;span class=&quot;k&quot;&gt;select&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;cola&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;colb&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;col1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;col2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; 
-    &lt;span class=&quot;n&quot;&gt;col3&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;date1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;date2&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;CTE3&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;Restrict the tables to the filtered data you are interested in earlier rather than later. Less joins and less operations on rows we don’t need will give better performance.&lt;/p&gt;
 
 &lt;h2 id=&quot;avoid-computation-within-joins&quot;&gt;Avoid computation within joins&lt;/h2&gt;
 
+&lt;p&gt;Rather create a new column in relevant tables before joining than performing computations in the join condition. Each time a record is checked against another there will be additional unnecessary computations. By including a column in the tables being joined you limit this to one computation per entry.&lt;/p&gt;
+
 &lt;h2 id=&quot;include-conditions-in-joins-rather-than-in-where-conditions&quot;&gt;Include conditions in joins rather than in where conditions&lt;/h2&gt;
+
+&lt;p&gt;Join conditions are executed before where conditions. Applying filters within a where will result in all records first being joined before the filtering happens. By including lal filters in the where you limit the number of joins that need to occur.&lt;/p&gt;
 
 &lt;h2 id=&quot;avoid-distinct-and-group-by&quot;&gt;Avoid distinct and group by&lt;/h2&gt;
 
-&lt;h2 id=&quot;avoid-computations-within-a-case-when&quot;&gt;Avoid computations within a case when&lt;/h2&gt;
+&lt;p&gt;Always ensure you are performing the correct join on only the necessary rows rather than using a distinct or group by. Only use these operations when aggregating or when completely necessary.&lt;/p&gt;
+
+&lt;h2 id=&quot;avoid-computations-and-aggregations-within-a-case-when&quot;&gt;Avoid computations and aggregations within a case when&lt;/h2&gt;
+
+&lt;p&gt;Including computations/aggregations within a case when condition may result in the computation/aggregation being computed multiple times. For example if we have&lt;/p&gt;
+&lt;div class=&quot;language-sql highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;    &lt;span class=&quot;p&quot;&gt;...&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;CASE&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;WHEN&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;SUM&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;TOTAL&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;100&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;then&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;SUM&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;TOTAL&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; 
+        &lt;span class=&quot;k&quot;&gt;ELSE&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;100&lt;/span&gt; 
+    &lt;span class=&quot;k&quot;&gt;END&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;AS&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;TOTAL_SUM&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;the condition requires the aggregation of &lt;em&gt;TOTAL&lt;/em&gt; and if the condition is true we need to perform the aggregation a second time.&lt;/p&gt;
+
+&lt;p&gt;Including this as a column in an intermediate step would be better where we could then just rely on the column values rather than an aggregation within the condition checks.&lt;/p&gt;
+
+&lt;div class=&quot;language-sql highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;    &lt;span class=&quot;p&quot;&gt;...&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;CASE&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;WHEN&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;TOTAL_SUM&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;100&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;then&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;TOTAL_SUM&lt;/span&gt; 
+        &lt;span class=&quot;k&quot;&gt;ELSE&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;100&lt;/span&gt; 
+    &lt;span class=&quot;k&quot;&gt;END&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;AS&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;TOTAL_SUM&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;FROM&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;SELECT&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;SUM&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;TOTAL&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;as&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;TOTAL_SUM&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;--aggregate before using within a condition&lt;/span&gt;
+            &lt;span class=&quot;p&quot;&gt;...&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;...&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;h2 id=&quot;where-to-practice-what-youve-learnt&quot;&gt;Where to practice what you’ve learnt?&lt;/h2&gt;</content><author><name>Ellen Rudman</name><email>rudman.ellen@gmail.com</email></author><summary type="html">SQL optimizations can save oodles of time and they are really intuitive and easy to identify once you know what to look for.</summary></entry><entry><title type="html">Is deep learning an RG flow?</title><link href="http://localhost:4000/posts/2020/07/01/is-deep-learning-an-rg-flow/" rel="alternate" type="text/html" title="Is deep learning an RG flow?" /><published>2020-07-01T21:29:00+01:00</published><updated>2020-07-01T21:29:00+01:00</updated><id>http://localhost:4000/posts/2020/07/01/is-deep-learning-an-rg-flow</id><content type="html" xml:base="http://localhost:4000/posts/2020/07/01/is-deep-learning-an-rg-flow/">&lt;p&gt;This post is aimed at exploring some key ideas presented in the paper
 &lt;a href=&quot;https://arxiv.org/abs/1906.05212#:~:text=Deep%20learning%20performs%20a%20sophisticated,directly%20relevant%20to%20deep%20learning.&quot;&gt;“Is Deep
