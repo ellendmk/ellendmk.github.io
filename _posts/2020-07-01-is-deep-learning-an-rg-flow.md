@@ -68,19 +68,22 @@ The subscripts $i$ and $a$ refer to specific nodes of a given
 input/output vector.
 Using the trained weights we can get to a set of hidden vectors
 (outputs) from the set of visible (input) training vectors.
+<div style='text-align:center;'>
 <img style="padding-top: 2em; padding-bottom: 2em; width: 650px;
     max-width:100%; margin: 0 auto;left: 50%; top: 50%;"
     src="{{site.baseurl}}/assets/img/dl_as_rg/rbm.png"  alt="image">
-
+</div>
 
 As mentioned earlier we train the networks on 2D Ising model
 configurations. Each configuration is a set of values of $\pm 1$
 arranged in a square.
 We transform the configurations from matrices of size $ L_v \times L_v $ into vectors of length $ L_v\times L_v$ by concatenating the
 rows as shown in the below image.
+<div style='text-align:center;'>
 <img style="padding-top: 2em; padding-bottom: 2em; width: 650px;
     max-width:100%; margin: 0 auto;"
     src="{{site.baseurl}}/assets/img/dl_as_rg/smaller_finite_concat.webp"  alt="image">
+    </div>
 
 # Variational RG coarse graining
     
