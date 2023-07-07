@@ -45,22 +45,6 @@
 
       <div class="meta">
         <div id="DivTableOfContentsLink">
-          <ul id="toc" class="toc__list">
-<li class="toc-entry toc-h1"><a href="#why-do-we-need-confusion-matrices">Why do we need confusion matrices?</a></li>
-<li class="toc-entry toc-h1"><a href="#what-is-a-confusion-matrix">What is a confusion matrix?</a>
-<ul class="toc__sublist">
-<li class="toc-entry toc-h2"><a href="#constructing-the-matrix">Constructing the matrix</a></li>
-<li class="toc-entry toc-h2"><a href="#accuracy-from-the-diagonal">Accuracy from the diagonal</a></li>
-<li class="toc-entry toc-h2"><a href="#how-good-are-we-at-predicting-opening_batsman--1">How good are we at predicting opening_batsman \(= 1\)?</a>
-<ul class="toc__sublist">
-<li class="toc-entry toc-h4"><a href="#1-recall-how-good-are-we-at-finding-actual-opening-batsmen">1. Recall: How good are we at finding actual opening batsmen?</a></li>
-<li class="toc-entry toc-h4"><a href="#2-precision-how-often-are-our-predictions-correct-of-who-an-opening-batsmen-is">2. Precision: How often are our predictions correct of who an opening batsmen is?</a></li>
-<li class="toc-entry toc-h4"><a href="#3-combining-precision-and-recall-into-a-single-metric-with-the-harmonic-mean">3. Combining precision and recall into a single metric with the harmonic mean</a></li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
         </div>
         <h1 class="title">
           Taking the confusion out of confusion matrices
@@ -70,6 +54,27 @@
       <div class="content">
         <p>Confusion matrices can at times be confusing and so can all the metrics that go along with them. Here we’ll try to break down intuitively what their purpose is and what each of the metrics mean.</p>
 
+<div class="DivTableOfContentsLink toc">
+
+<ul class="toc__list">
+<ul class="toc__sublist">
+     <li><a href="#Why-do-we-need-confusion-matrices?">Why do we need confusion matrices?</a></li>
+     <li><a href="#What-is-a-confusion-matrix?">What is a confusion matrix?</a></li>
+     <ul class="toc__sublist">
+          <li><a href="#Constructing-the-matrix">Constructing the matrix</a></li>
+          <li><a href="#Accuracy-from-the-diagonal">Accuracy from the diagonal</a></li>
+          <li><a href="#How-good-are-we-at-predicting">How good are we at predicting opening_batsman = 1?</a></li>
+          <ul>
+               <li><a href="#1-Recall">1. Recall: How good are we at finding actual opening batsmen?</a></li>
+               <li><a href="#2-Precision">2. Precision: How often are our predictions correct of who an opening batsmen is?</a></li>
+               <li><a href="#3-Combining-precision-and-recall">3. Combining precision and recall into a single metric with the harmonic mean</a></li>      
+          </ul>
+     </ul>
+</ul>
+</ul>
+</div>
+
+<p id="Why-do-we-need-confusion-matrices?"></p>
 <h1 id="why-do-we-need-confusion-matrices">Why do we need confusion matrices?</h1>
 
 <p>Confusion matrices are a useful way to summarize model performance when dealing with classification tasks. Not only do they apply to the binary classification task but can also be used when dealing with more than two classes.</p>
@@ -81,7 +86,7 @@
 <p>If we predict all players are <em>not</em> opening batsmen our accuracy would be 95% because just by predicting everything as our dominant class (not an opening batsman) we get 95 % of labels correct. 95 % sounds great but if we were hoping to identify new up and coming opening batsmen this would not work at all and our accuracy measure is giving the wrong impression. Here the class we actually care about getting right (even though its only 5 % of all labels) are when players are an opening batsman.</p>
 
 <p>A confusion matrix allows us to dig deeper into our results and look at each target class to judge performance.</p>
-
+<p id="What-is-a-confusion-matrix?"></p>
 <h1 id="what-is-a-confusion-matrix">What is a confusion matrix?</h1>
 
 <p>Lets look at a slightly smaller dataset below where only the target variable is shown. Each block represents a labeled sample with orange for <em>opening_batsman</em> \(=1\) and blue for <em>opening_batsman</em> \(=0\). This is shown by the first row of blocks below.</p>
@@ -95,7 +100,7 @@
 <img src="/assets/img/predictions.png" alt="drawing" style="height:100px;object-fit: scale-down;padding-top:-100px;" />
      <div class="caption" style="text-align:justify;"><b>Figure 1:</b> Top: actual labels (orange meaning opening_batsman = 1 and blue meaning opening_batsman = 0). Bottom: predicted labels (ticks in white show correct classifications and black crosses show misclassifications.).</div>
 </div>
-
+<p id="Constructing-the-matrix"></p>
 <h2 id="constructing-the-matrix">Constructing the matrix</h2>
 
 <p>To construct a confusion matrix we have a matrix with predictions as our rows and actual labels as our columns. In each case labels can take values of positive (1 = opening batsman) and negative (0 = not an opening batsman). Each sample will have an actual label and a predicted label and by summing up how many lie in each block we get a 4x4 matrix as shown below.</p>
@@ -140,13 +145,14 @@
 </table>
 
 <p>The terminology we use to label each block of the confusion matrix is either true or false (is our prediction correct i.e. true or incorrect i.e. false) followed by what our prediction was (positive i.e. 1 or negative i.e. 0).</p>
-
+<p id="Accuracy-from-the-diagonal"></p>
 <h2 id="accuracy-from-the-diagonal">Accuracy from the diagonal</h2>
 
 <p>The diagonal of a confusion matrix tells us about the correct classifications our model made. Summing these and dividing by the total number of samples will give us the accuracy measure we discussed above. For this dataset we have \(3+8=11\) out of 18 predictions that are correct giving us an accuracy of \(11/18 = 57.9\%\).</p>
 
 <p>But we already mentioned that we care more about the performance of our model for predicting a label of 1.</p>
 
+<p id="How-good-are-we-at-predicting"></p>
 <h2 id="how-good-are-we-at-predicting-opening_batsman--1">How good are we at predicting <em>opening_batsman</em> \(= 1\)?</h2>
 
 <p>There are a few intuitive measures to consider when quantifying how well our model performs when looking at a specific class</p>
@@ -157,6 +163,7 @@
   <li>A measure that combines the above two metrics: the ability to find real labels as well as have a high hit rate amongst predictions.</li>
 </ol>
 
+<p id="1-Recall"></p>
 <h4 id="1-recall-how-good-are-we-at-finding-actual-opening-batsmen">1. Recall: How good are we at finding actual opening batsmen?</h4>
 <p>For the first point we could think of this as trying to see how many actual opening_batsman = 1 labels we managed to catch. This we can get with the ratio between the number of correct predictions for opening_batsman = 1  (TP) and all the actual opening_batsman = 1 labels (TP+FN). This measure is called recall and gives ua an idea of well we can recall the ground truth of our underlying data. Recall has the below formula</p>
 
@@ -166,6 +173,8 @@
 
 \[R = \frac{3}{3+3}=0.5\]
 
+<p id="2-Precision"></p>
+
 <h4 id="2-precision-how-often-are-our-predictions-correct-of-who-an-opening-batsmen-is">2. Precision: How often are our predictions correct of who an opening batsmen is?</h4>
 
 <p>For the second point we are trying to understand how often our positive predictions are actually correct. For this we again need our correct opening_batsman = 1 (TP) as the numerator but for our denominator we now need all predictions where opening_batsman = 1 regardless of whether they were correct or not (TP+FP). This measure tells us how precise we are at predicting and is called precision. The formula is given by</p>
@@ -174,7 +183,8 @@
 
 <p>In this case we get a precision of</p>
 
-\[P = \frac{3}{3+4}=0.429\]
+<p>\(P = \frac{3}{3+4}=0.429\)</p>
+<p id="3-Combining-precision-and-recall"></p>
 
 <h4 id="3-combining-precision-and-recall-into-a-single-metric-with-the-harmonic-mean">3. Combining precision and recall into a single metric with the harmonic mean</h4>
 

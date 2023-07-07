@@ -581,12 +581,13 @@ article .meta {
   font-size: 1.5rem;
  }
  
- @media (min-width: 1200px) {
+ @media (min-width: 900px) {
 #DivTableOfContentsLink {
   width: 23%;
   position: fixed;
   left: 20px;
   top: 20px;
+  float: left;
 }
  }
  .toc-link {    

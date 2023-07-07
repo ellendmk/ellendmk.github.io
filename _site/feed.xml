@@ -1,5 +1,26 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.3.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2023-07-06T16:12:54+01:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">ellen-loves-data</title><author><name>Ellen Rudman</name><email>rudman.ellen@gmail.com</email></author><entry><title type="html">Taking the confusion out of confusion matrices</title><link href="http://localhost:4000/posts/2023/07/03/taking-the-confusion-out-of-confusion-matrices/" rel="alternate" type="text/html" title="Taking the confusion out of confusion matrices" /><published>2023-07-03T21:29:00+01:00</published><updated>2023-07-03T21:29:00+01:00</updated><id>http://localhost:4000/posts/2023/07/03/taking-the-confusion-out-of-confusion-matrices</id><content type="html" xml:base="http://localhost:4000/posts/2023/07/03/taking-the-confusion-out-of-confusion-matrices/">&lt;p&gt;Confusion matrices can at times be confusing and so can all the metrics that go along with them. Here we’ll try to break down intuitively what their purpose is and what each of the metrics mean.&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.3.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2023-07-07T08:47:30+01:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">ellen-loves-data</title><author><name>Ellen Rudman</name><email>rudman.ellen@gmail.com</email></author><entry><title type="html">Taking the confusion out of confusion matrices</title><link href="http://localhost:4000/posts/2023/07/03/taking-the-confusion-out-of-confusion-matrices/" rel="alternate" type="text/html" title="Taking the confusion out of confusion matrices" /><published>2023-07-03T21:29:00+01:00</published><updated>2023-07-03T21:29:00+01:00</updated><id>http://localhost:4000/posts/2023/07/03/taking-the-confusion-out-of-confusion-matrices</id><content type="html" xml:base="http://localhost:4000/posts/2023/07/03/taking-the-confusion-out-of-confusion-matrices/">&lt;p&gt;Confusion matrices can at times be confusing and so can all the metrics that go along with them. Here we’ll try to break down intuitively what their purpose is and what each of the metrics mean.&lt;/p&gt;
 
+&lt;div class=&quot;DivTableOfContentsLink toc&quot;&gt;
+
+&lt;ul class=&quot;toc__list&quot;&gt;
+&lt;ul class=&quot;toc__sublist&quot;&gt;
+     &lt;li&gt;&lt;a href=&quot;#Why-do-we-need-confusion-matrices?&quot;&gt;Why do we need confusion matrices?&lt;/a&gt;&lt;/li&gt;
+     &lt;li&gt;&lt;a href=&quot;#What-is-a-confusion-matrix?&quot;&gt;What is a confusion matrix?&lt;/a&gt;&lt;/li&gt;
+     &lt;ul class=&quot;toc__sublist&quot;&gt;
+          &lt;li&gt;&lt;a href=&quot;#Constructing-the-matrix&quot;&gt;Constructing the matrix&lt;/a&gt;&lt;/li&gt;
+          &lt;li&gt;&lt;a href=&quot;#Accuracy-from-the-diagonal&quot;&gt;Accuracy from the diagonal&lt;/a&gt;&lt;/li&gt;
+          &lt;li&gt;&lt;a href=&quot;#How-good-are-we-at-predicting&quot;&gt;How good are we at predicting opening_batsman = 1?&lt;/a&gt;&lt;/li&gt;
+          &lt;ul&gt;
+               &lt;li&gt;&lt;a href=&quot;#1-Recall&quot;&gt;1. Recall: How good are we at finding actual opening batsmen?&lt;/a&gt;&lt;/li&gt;
+               &lt;li&gt;&lt;a href=&quot;#2-Precision&quot;&gt;2. Precision: How often are our predictions correct of who an opening batsmen is?&lt;/a&gt;&lt;/li&gt;
+               &lt;li&gt;&lt;a href=&quot;#3-Combining-precision-and-recall&quot;&gt;3. Combining precision and recall into a single metric with the harmonic mean&lt;/a&gt;&lt;/li&gt;      
+          &lt;/ul&gt;
+     &lt;/ul&gt;
+&lt;/ul&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+
+&lt;p id=&quot;Why-do-we-need-confusion-matrices?&quot;&gt;&lt;/p&gt;
 &lt;h1 id=&quot;why-do-we-need-confusion-matrices&quot;&gt;Why do we need confusion matrices?&lt;/h1&gt;
 
 &lt;p&gt;Confusion matrices are a useful way to summarize model performance when dealing with classification tasks. Not only do they apply to the binary classification task but can also be used when dealing with more than two classes.&lt;/p&gt;
@@ -11,7 +32,7 @@
 &lt;p&gt;If we predict all players are &lt;em&gt;not&lt;/em&gt; opening batsmen our accuracy would be 95% because just by predicting everything as our dominant class (not an opening batsman) we get 95 % of labels correct. 95 % sounds great but if we were hoping to identify new up and coming opening batsmen this would not work at all and our accuracy measure is giving the wrong impression. Here the class we actually care about getting right (even though its only 5 % of all labels) are when players are an opening batsman.&lt;/p&gt;
 
 &lt;p&gt;A confusion matrix allows us to dig deeper into our results and look at each target class to judge performance.&lt;/p&gt;
-
+&lt;p id=&quot;What-is-a-confusion-matrix?&quot;&gt;&lt;/p&gt;
 &lt;h1 id=&quot;what-is-a-confusion-matrix&quot;&gt;What is a confusion matrix?&lt;/h1&gt;
 
 &lt;p&gt;Lets look at a slightly smaller dataset below where only the target variable is shown. Each block represents a labeled sample with orange for &lt;em&gt;opening_batsman&lt;/em&gt; \(=1\) and blue for &lt;em&gt;opening_batsman&lt;/em&gt; \(=0\). This is shown by the first row of blocks below.&lt;/p&gt;
@@ -25,7 +46,7 @@
 &lt;img src=&quot;/assets/img/predictions.png&quot; alt=&quot;drawing&quot; style=&quot;height:100px;object-fit: scale-down;padding-top:-100px;&quot; /&gt;
      &lt;div class=&quot;caption&quot; style=&quot;text-align:justify;&quot;&gt;&lt;b&gt;Figure 1:&lt;/b&gt; Top: actual labels (orange meaning opening_batsman = 1 and blue meaning opening_batsman = 0). Bottom: predicted labels (ticks in white show correct classifications and black crosses show misclassifications.).&lt;/div&gt;
 &lt;/div&gt;
-
+&lt;p id=&quot;Constructing-the-matrix&quot;&gt;&lt;/p&gt;
 &lt;h2 id=&quot;constructing-the-matrix&quot;&gt;Constructing the matrix&lt;/h2&gt;
 
 &lt;p&gt;To construct a confusion matrix we have a matrix with predictions as our rows and actual labels as our columns. In each case labels can take values of positive (1 = opening batsman) and negative (0 = not an opening batsman). Each sample will have an actual label and a predicted label and by summing up how many lie in each block we get a 4x4 matrix as shown below.&lt;/p&gt;
@@ -70,13 +91,14 @@
 &lt;/table&gt;
 
 &lt;p&gt;The terminology we use to label each block of the confusion matrix is either true or false (is our prediction correct i.e. true or incorrect i.e. false) followed by what our prediction was (positive i.e. 1 or negative i.e. 0).&lt;/p&gt;
-
+&lt;p id=&quot;Accuracy-from-the-diagonal&quot;&gt;&lt;/p&gt;
 &lt;h2 id=&quot;accuracy-from-the-diagonal&quot;&gt;Accuracy from the diagonal&lt;/h2&gt;
 
 &lt;p&gt;The diagonal of a confusion matrix tells us about the correct classifications our model made. Summing these and dividing by the total number of samples will give us the accuracy measure we discussed above. For this dataset we have \(3+8=11\) out of 18 predictions that are correct giving us an accuracy of \(11/18 = 57.9\%\).&lt;/p&gt;
 
 &lt;p&gt;But we already mentioned that we care more about the performance of our model for predicting a label of 1.&lt;/p&gt;
 
+&lt;p id=&quot;How-good-are-we-at-predicting&quot;&gt;&lt;/p&gt;
 &lt;h2 id=&quot;how-good-are-we-at-predicting-opening_batsman--1&quot;&gt;How good are we at predicting &lt;em&gt;opening_batsman&lt;/em&gt; \(= 1\)?&lt;/h2&gt;
 
 &lt;p&gt;There are a few intuitive measures to consider when quantifying how well our model performs when looking at a specific class&lt;/p&gt;
@@ -87,6 +109,7 @@
   &lt;li&gt;A measure that combines the above two metrics: the ability to find real labels as well as have a high hit rate amongst predictions.&lt;/li&gt;
 &lt;/ol&gt;
 
+&lt;p id=&quot;1-Recall&quot;&gt;&lt;/p&gt;
 &lt;h4 id=&quot;1-recall-how-good-are-we-at-finding-actual-opening-batsmen&quot;&gt;1. Recall: How good are we at finding actual opening batsmen?&lt;/h4&gt;
 &lt;p&gt;For the first point we could think of this as trying to see how many actual opening_batsman = 1 labels we managed to catch. This we can get with the ratio between the number of correct predictions for opening_batsman = 1  (TP) and all the actual opening_batsman = 1 labels (TP+FN). This measure is called recall and gives ua an idea of well we can recall the ground truth of our underlying data. Recall has the below formula&lt;/p&gt;
 
@@ -96,6 +119,8 @@
 
 \[R = \frac{3}{3+3}=0.5\]
 
+&lt;p id=&quot;2-Precision&quot;&gt;&lt;/p&gt;
+
 &lt;h4 id=&quot;2-precision-how-often-are-our-predictions-correct-of-who-an-opening-batsmen-is&quot;&gt;2. Precision: How often are our predictions correct of who an opening batsmen is?&lt;/h4&gt;
 
 &lt;p&gt;For the second point we are trying to understand how often our positive predictions are actually correct. For this we again need our correct opening_batsman = 1 (TP) as the numerator but for our denominator we now need all predictions where opening_batsman = 1 regardless of whether they were correct or not (TP+FP). This measure tells us how precise we are at predicting and is called precision. The formula is given by&lt;/p&gt;
@@ -104,7 +129,8 @@
 
 &lt;p&gt;In this case we get a precision of&lt;/p&gt;
 
-\[P = \frac{3}{3+4}=0.429\]
+&lt;p&gt;\(P = \frac{3}{3+4}=0.429\)&lt;/p&gt;
+&lt;p id=&quot;3-Combining-precision-and-recall&quot;&gt;&lt;/p&gt;
 
 &lt;h4 id=&quot;3-combining-precision-and-recall-into-a-single-metric-with-the-harmonic-mean&quot;&gt;3. Combining precision and recall into a single metric with the harmonic mean&lt;/h4&gt;
 
@@ -178,7 +204,7 @@
 Learning a Renormalization Group Flow?”&lt;/a&gt; which I co-authored
 with Prof. Robert de Mello Koch and Prof. Ling Cheng.&lt;/p&gt;
 
-&lt;h1 id=&quot;part-1---a-look-into-langle-vh-rangle-correlators&quot;&gt;Part 1 - A look into (\langle vh \rangle) correlators&lt;/h1&gt;
+&lt;h1 id=&quot;part-1---a-look-into--langle-vh-rangle--correlators&quot;&gt;Part 1 - A look into $ \langle vh \rangle $ correlators&lt;/h1&gt;
 &lt;h1 id=&quot;what-is-learning&quot;&gt;What is learning?&lt;/h1&gt;
 &lt;p&gt;Humans are pretty good at learning new things. From the time that we
 are babies we become sponges who soak up (not only lots of food and
@@ -201,7 +227,7 @@ to compare the renormalization group (RG) and restricted Boltzmann
 machine (RBM) networks. For this study configurations of the 2D
 Ising model are used as training data. The Ising model is a model of
 a magnet consisting of discrete spins arranged on a square lattice.
-Spins can take values of (\pm 1$. This data is well suited for
+Spins can take values of $ \pm 1 $. This data is well suited for
 training RBMs because it consists of only two values. Another reason
 why the Ising model is attractive to study stems from the fact that
 neighboring spins are coupled. This is similar to an image where
@@ -222,41 +248,49 @@ at the RBM coarse graining.&lt;/p&gt;
 
 &lt;h1 id=&quot;rbm-coarse-graining&quot;&gt;RBM coarse graining&lt;/h1&gt;
 
-&lt;p&gt;An RBM produces a set of output vectors ({\bf h}) given a set of
-input vectors ({\bf v}) using the following equation
-$h_a = \tanh(\sum_i W_{ia} v_i+b_a^{(h)})$
+&lt;p&gt;An RBM produces a set of output vectors $ {\bf h} $ given a set of
+input vectors $ {\bf v} $ using the following equation
+$ h_a = \tanh(\sum_i W_{ia} v_i+b_a^{(h)}) $
 where the parameters of the model determined by training are&lt;/p&gt;
 
-&lt;ul&gt;&lt;li&gt;\(b_a^{(h)}\) - the hidden bias and &lt;/li&gt;
-    &lt;li&gt;\(W_{ia} \) - the weight matrix.&lt;/li&gt;
+&lt;ul&gt;&lt;li&gt;\( b_a^{(h)} \) - the hidden bias and &lt;/li&gt;
+    &lt;li&gt;\( W_{ia} \) - the weight matrix.&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;The subscripts (i) and (a) refer to specific nodes of a given
+&lt;p&gt;The subscripts $i$ and $a$ refer to specific nodes of a given
 input/output vector.
 Using the trained weights we can get to a set of hidden vectors
-(outputs) from the set of visible (input) training vectors.
-&lt;img style=&quot;padding-top: 2em; padding-bottom: 2em; width: 650px;     max-width:100%; margin: 0 auto;left: 50%; top: 50%;&quot; src=&quot;/assets/img/dl_as_rg/rbm.png&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
+(outputs) from the set of visible (input) training vectors.&lt;/p&gt;
+&lt;div style=&quot;text-align:center;&quot;&gt;
+&lt;img style=&quot;padding-top: 2em; padding-bottom: 2em; width: 650px;
+    max-width:100%; margin: 0 auto;left: 50%; top: 50%;&quot; src=&quot;/assets/img/dl_as_rg/rbm.png&quot; alt=&quot;image&quot; /&gt;
+&lt;/div&gt;
 
 &lt;p&gt;As mentioned earlier we train the networks on 2D Ising model
-configurations. Each configuration is a set of values of (\pm 1$
+configurations. Each configuration is a set of values of $\pm 1$
 arranged in a square.
-We transform the configurations from matrices of size ( L_v \times L_v ) into vectors of length ( L_v\times L_v) by concatenating the
-rows as shown in the below image.
-&lt;img style=&quot;padding-top: 2em; padding-bottom: 2em; width: 650px;     max-width:100%; margin: 0 auto;&quot; src=&quot;/assets/img/dl_as_rg/smaller_finite_concat.webp&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
+We transform the configurations from matrices of size $ L_v \times L_v $ into vectors of length $ L_v\times L_v$ by concatenating the
+rows as shown in the below image.&lt;/p&gt;
+&lt;div style=&quot;text-align:center;&quot;&gt;
+&lt;img style=&quot;padding-top: 2em; padding-bottom: 2em; width: 650px;
+    max-width:100%; margin: 0 auto;&quot; src=&quot;/assets/img/dl_as_rg/smaller_finite_concat.webp&quot; alt=&quot;image&quot; /&gt;
+    &lt;/div&gt;
 
 &lt;h1 id=&quot;variational-rg-coarse-graining&quot;&gt;Variational RG coarse graining&lt;/h1&gt;
 
 &lt;p&gt;In variational RG one performs a local average of neighboring spins. RG
-    acts on the original matrix of (\pm 1) values, rather than a vector,
-    as is the case for the RBM. We can represent the RG average as follows
-    (s’&lt;em&gt;{k,j} = \frac{1}{4}(s&lt;/em&gt;{k,j}+s_{k+1,j}+s_{k,j+1}+s_{k+1,j+1})$
-    where (s_{i,j}) denotes a spin in the input lattice ($v_i) above)
-    and (s’_{i,j}) denotes a coarse grained spin present in the output
-    lattice ((h_a) above).
-    This averaging is performed on blocks of 4 spins at a time and these
-    blocks do not overlap. Thus each block of 4 spins translates into a
-    single output spin and we have a quarter of the number of input spins in
-    the output. (The RBMs are constructed so they too reduce the input to
-    one quarter of the number of input nodes.)&lt;/p&gt;
+acts on the original matrix of $ \pm 1 $ values, rather than a vector,
+as is the case for the RBM. We can represent the RG average as follows&lt;/p&gt;
+
+&lt;p&gt;$s&apos;&lt;em&gt;{k,j} = \frac{1}{4}(s&lt;/em&gt;{k,j}+s_{k+1,j} + s_{k,j+1} + s_{k+1,j+1})$&lt;/p&gt;
+
+&lt;p&gt;where $s_{i,j}$ denotes a spin in the input lattice ($v_i$ above)
+and $s’_{i,j}$ denotes a coarse grained spin present in the output
+lattice ($h_a$ above).
+This averaging is performed on blocks of 4 spins at a time and these
+blocks do not overlap. Thus each block of 4 spins translates into a
+single output spin and we have a quarter of the number of input spins in
+the output. (The RBMs are constructed so they too reduce the input to
+one quarter of the number of input nodes.)&lt;/p&gt;
 
 &lt;div style=&quot;text-align:center;&quot;&gt;
     &lt;img style=&quot;padding-top: 2em; padding-bottom: 2em; width:
@@ -270,8 +304,8 @@ two transformations are acting in the same way. We can see that both
 take a linear combination of the inputs to produce an output.&lt;/p&gt;
 
 &lt;p&gt;The input/output configurations are arranged in a grid of size
-$L_v\times L_v$/$L_h\times L_h) (where here for ease of explanation
-$L_v=4) and (L_h=2$) spins. From the diagrams above you should have
+$ L_v\times L_v $/ $ L_h\times L_h$ (where here for ease of explanation
+$ L_v=4$ and $L_h=2 $ ) spins. From the diagrams above you should have
 noticed that RG acts on these configurations in their original matrix
 form, but the RBM accepts them as a vector.&lt;/p&gt;
 
@@ -298,7 +332,7 @@ below:&lt;/p&gt;
 
 &lt;p&gt;For the inputs and outputs depicted here we have input matrices which
 consists of 16 values and output matrices which consist of 4 values.
-Lets break down the (\langle vh \rangle) sum using some made up
+Lets break down the $\langle vh \rangle$ sum using some made up
 input/output pairs.&lt;/p&gt;
 
 &lt;p&gt;Lets assume we have the following inputs&lt;/p&gt;
@@ -320,11 +354,11 @@ max-width:100%;margin: auto;&quot; src=&quot;/assets/img/dl_as_rg/out1.png&quot;
 max-width:100%;margin: auto;&quot; src=&quot;/assets/img/dl_as_rg/out2.png&quot; alt=&quot;image&quot; /&gt;
 &lt;/div&gt;
 
-&lt;p&gt;We calculate the correlator (\langle v_1h_1 \rangle) by taking the
-product of nodes (v_1) and (h_1) for each pair of inputs and outputs. These
+&lt;p&gt;We calculate the correlator $\langle v_1h_1 \rangle$ by taking the
+product of nodes $v_1$ and $h_1$ for each pair of inputs and outputs. These
 products are averaged so we sum the products and divide by the number of
 input/output pairs (which here is equal to 2 and so we only sum two
-terms per (\langle v_ih_a \rangle$) i.e.&lt;/p&gt;
+terms per $\langle v_ih_a \rangle$) i.e.&lt;/p&gt;
 &lt;div style=&quot;text-align:center; padding-top:2em; padding-bottom:2em;&quot;&gt;
 &lt;p&gt;
 \(\langle v_1h_1 \rangle = \frac{1}{2}(\)&lt;mark style=&quot;background-color: #d0f8d0;&quot;&gt;\(v_1 h_1\)&lt;/mark&gt; \(+\) &lt;mark style=&quot;background-color:#e2d0f8;&quot;&gt;\(v_1h_1\)&lt;/mark&gt;\( )=
@@ -334,7 +368,7 @@ terms per (\langle v_ih_a \rangle$) i.e.&lt;/p&gt;
 &lt;/p&gt;
 &lt;/div&gt;
 
-&lt;p&gt;For one more example lets look at (\langle v_{16} h_4 \rangle) (The
+&lt;p&gt;For one more example lets look at $\langle v_{16} h_4 \rangle$ (The
 bottom left most visible and hidden nodes)&lt;/p&gt;
 
 &lt;div style=&quot;text-align:center;padding-top:2em; padding-bottom:2em;&quot;&gt;
@@ -346,8 +380,8 @@ bottom left most visible and hidden nodes)&lt;/p&gt;
 &lt;/div&gt;
 
 &lt;p&gt;For each output node we obtain a grid of values which is the same size
-as the input. Here we see an image of what would be the (\langle
-v_i h_1 \rangle) correlators. For the inputs/outputs shown above we would
+as the input. Here we see an image of what would be the $\langle
+v_i h_1 \rangle$ correlators. For the inputs/outputs shown above we would
 get 4 matrices of values (because we have 4 hidden nodes) just like the
 one shown below.&lt;/p&gt;
 
@@ -360,14 +394,14 @@ one shown below.&lt;/p&gt;
 &lt;p&gt;&lt;br /&gt;&lt;/p&gt;
 
 &lt;p&gt;Great! So now we can encode the patterns of thousands of input and output
-pairs into a neat statistical measure of (\langle vh \rangle$. Each
-hidden node now has a matrix of (\langle vh \rangle) values associated
+pairs into a neat statistical measure of $\langle vh \rangle$. Each
+hidden node now has a matrix of $\langle vh \rangle$ values associated
 with it. These values tell us important information about which input
 nodes each hidden node is correlated to. But we may still have hundreds
 of these matrices to understand depending on the number of hidden nodes
 in the transformation.&lt;/p&gt;
 
-&lt;p&gt;Below are examples of the (\langle vh \rangle) patterns we observe in
+&lt;p&gt;Below are examples of the $\langle vh \rangle$ patterns we observe in
 each coarse graining scheme. The dark patches show a patch where the
 given hidden node is highly correlated to input nodes. We need a way to
 quantify similarities between the schemes. To do this we use spatial
