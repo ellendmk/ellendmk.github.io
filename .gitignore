@@ -2,3 +2,9 @@ _site/
 .sass-cache/
 .jekyll-cache/
 .jekyll-metadata
+_site/feed.xml
+_site/feed.xml
+_site/posts/2020/07/01/is-deep-learning-an-rg-flow/index.html
+_site/posts/2023/06/24/practical-advice-for-optimising-sql-queries/index.html
+_site/posts/2023/07/03/taking-the-confusion-out-of-confusion-matrices/index.html
+_site/sitemap.xml
