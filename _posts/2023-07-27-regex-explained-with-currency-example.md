@@ -41,8 +41,9 @@ USD 27.02         # not valid string - leading 0 after decimal
 
 So lets break down the problem into 3 parts
 1. Currency
-2. Whole numbers
-3. Decimals
+2. Leading whole numbers
+3. Thousands separated numbers
+4. Decimals
 
 
 And lets list some useful regex 
@@ -81,37 +82,55 @@ You can test this at [regex101.com](https://regex101.com/). In he image below we
 ![](image-1.png)
 
 
-## 2. Whole numbers
+## 2. Leading whole numbers
 
 ```
-(0{1}|[1-9]{1}[0-9]{2,3},[0-9]{3}?)
+(0{1}|[1-9]{1}[0-9]{0,2})
 ```
 
 Lets break this down into a few pieces 
+
   a. `0{1}` 
   b. `|`
   c. `[1-9]{1}`
-  d. `[0-9]{2,3}`
-  e. `,`
-  f. `[0-9]{3}?`
+  d. `[0-9]{0,2}`
   
-The first piece
+- The first piece a. is looking for a single character `0` (for cases where we have less than 1 unit of currency i.e. USD **0**.50).
+- b. gives an or condition for patterns seen in c. and d.
+- With c. we need 1 digit between 1 and 9 `[1-9]{1}` (this will ensure no leading zeroes in our whole numbers).
+- In d. we allow values between 0 and 9 `[0-9]` with between 0 and 2 digits (`{0,2}`) (this ensures we can have values of 1, 10 or 100 appearing as valid).
+
+![](image.png)
+
+## 3. Thousands separated whole numbers
 
 ```
-0{1}
+(,[0-9]{3})*
 ```
 
-is looking for a single character `0`.
+Or value may be large and need many thousand separators but it may need none. Wrapping our thousand separator regex within a group that can appear 0 or more times `(...)*` allows for this.
 
-The second piece is saying the following
-- or (`|`) 
-- we could have 1 digit between 1 and 9 `[1-9]{1}` (this will ensure no leading zeroes in our whole numbers but we should still allow for zeroes after the first digit)
-- followed by between 2 and 3 digits with values between 0 and 9 `[0-9]{2,3}` (this ensures we can have values of 10 or 100 appearing as valid)
-- which should be followed by a comma `,`
+Within that group we know we need a comma `,` followed by exactly 3 `{3}` values 0 to 9 `[0-9]`.
 
+![](image-2.png)
 
-## 3. Decimals
+## 4.Decimals
 
 ```
-(.[1-9][0-9])?$
+(.[1-9]{1}[0-9]{1})*$
 ```
+Decimals may also not exist in our string so again we use the `*`.
+Here we need a full stop `.` followed by two digits. The first digit must be between 1 and 9 `[1-9]{1}` and the second between 0 and 9 `[0-9]{1}`.
+We end our regex with a `$` to show this is the end of the string.
+
+![](image-3.png)
+
+# Conclusion
+
+Putting this altogether we have the following regex
+
+```
+^(USD|ZAR|GBP)\s(0{1}|[1-9]{1}[0-9]{0,2})(,[0-9]{3})*(.[1-9]{1}[0-9]{1})*$
+```
+
+Hopefully this has helped understand how to go about structuring a regex and what certain syntax means. If you have any questions, corrections or additions please comment below.
