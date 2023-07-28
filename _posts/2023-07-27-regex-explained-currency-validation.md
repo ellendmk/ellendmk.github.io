@@ -1,7 +1,9 @@
 ---
 layout: post
-title: Regex explained with currency example
+title: Regex explained - currency validation
 date: 2023-07-27
+comments: true
+toc: true
 ---
 
 Regular expressions are a great way to define and check for complex patterns within strings. But often they can look cryptic and are tricky to write. In this post we'll look at an example related to currency to try break down some important principles that you can reuse for other regex tasks.
