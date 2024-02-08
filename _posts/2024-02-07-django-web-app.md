@@ -1,8 +1,9 @@
 ---
 layout: post
 title: A Django web-app for wedding invites
-date: 2024-02-07 10:18:00
+date: 2024-02-07 
 comments: true
+toc: true
 ---
 
 In this post I'll take you through the web app I built using Django to handle my wedding invites and RSVP tracking. It was great fun to build! You can check out the code on [github](https://github.com/ellendmk/django-wedding-site).
@@ -41,7 +42,6 @@ This web app was hosted on an AWS EC2 instance using Nginx and gunicorn. The sit
 
 ![](wedding_site_cropped.png)
 
-
 ![](RSVP_cropped.png)
 
 ![](invite.png)
@@ -55,7 +55,6 @@ Below I dive into a little more detail on the unique aspects of this project.
 One of Django's key features is its powerful and flexible ORM (Object-Relational Mapping) system, which abstracts the database layer and allows developers to interact with databases using Python objects. This makes database operations straightforward and database-agnostic, supporting multiple database backends such as PostgreSQL, MySQL, SQLite, and Oracle.
 
 In my project I used a MySql DB and had two models, `guests` and `families` in the `guest_handler` app. These models are pre-populated with fixtures containing all invited guests.
-
 
 The `guests` model has the below fields
 
