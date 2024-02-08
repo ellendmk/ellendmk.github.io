@@ -129,7 +129,7 @@ As mentioned above terraform can be used to spin up infrastructure for a number 
      3. **Provider Block**: This block configures the AWS provider.
     It sets the AWS region to "eu-west-2" and uses the values stored in the variables aws_access_key and aws_secret_key for authentication.
 
-        ```
+        ```terraform
         # Configure provider
         provider "aws" {
             region     = "eu-west-2"
@@ -139,7 +139,7 @@ As mentioned above terraform can be used to spin up infrastructure for a number 
         ```
     4. **Resource Block - aws_instance**: This block creates an EC2 instance resource named "example" using the specified AMI (ami-0264a899947b7d068) and instance type (t3.micro).
 
-        ```
+        ```terraform
         # Create aws_instance resource named 'example'
         resource "aws_instance" "example" {
             ami  = "ami-0264a899947b7d068" # amazon machine image
@@ -149,7 +149,7 @@ As mentioned above terraform can be used to spin up infrastructure for a number 
      5. **Resource Block - aws_security_group**: This block creates a security group resource named "ec2_security_group" for EC2 instances.
     It specifies a name and description for the security group.
     Defines ingress rules to allow inbound SSH, HTTP, and HTTPS traffic, and an egress rule allowing all outbound traffic.
-        ```
+        ```terraform
         # EC2 instance Security Group
         resource "aws_security_group" "ec2_security_group" {
             name        = "ec2_security_group"
@@ -190,7 +190,7 @@ As mentioned above terraform can be used to spin up infrastructure for a number 
         ```
 
      6. **Resource Block - tls_private_key**:     This block generates an RSA private key of size 4096 bits using the TLS provider.
-        ```
+        ```terraform
         # Create RSA key of size 4096 bits
         resource "tls_private_key" "tf_ec2_key" {
             algorithm = "RSA"
@@ -198,7 +198,7 @@ As mentioned above terraform can be used to spin up infrastructure for a number 
         }
         ```
     7. **Resource Block - local_file**: This block creates a local file named "tf_ec2_key.pem" containing the RSA private key generated in the previous block.
-        ```
+        ```terraform
         # Create local file
         resource "local_file" "tf_ec2_key" {
             content  = tls_private_key.tf_ec2_key.private_key_pem
@@ -207,7 +207,7 @@ As mentioned above terraform can be used to spin up infrastructure for a number 
         ```
     8. **Resource Block - aws_key_pair**:     This block creates an AWS key pair resource named "tf_ec2_key" using the RSA public key generated previously.
 
-        ```
+        ```terraform
         # Create AWS key pair
             resource "aws_key_pair" "tf_ec2_key" {
             key_name   = "tf_ec2_key"
@@ -219,7 +219,7 @@ As mentioned above terraform can be used to spin up infrastructure for a number 
 
 9. Putting this all together we get the below `main.tf` file
 
-    ```
+    ```terraform
     terraform {
         required_providers {
             aws = {
