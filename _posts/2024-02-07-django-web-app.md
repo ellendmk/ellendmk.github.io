@@ -33,7 +33,7 @@ At its core, Django follows the Model-View-Template (MVT) architectural pattern,
 
 Django also includes a built-in authentication system, form handling, URL routing, template engine, and admin interface, among many other features. Its robust security features, including protection against common web vulnerabilities like SQL injection, cross-site scripting (XSS), and cross-site request forgery (CSRF), make it suitable for developing secure web applications.
 
-![Fig 1](django structure cropped.png)
+![Fig 1](django_structure_cropped.png)
 
 # Final product
 
@@ -76,7 +76,7 @@ The `families` model has the below fields
 
 Django automatically creates the necessary tables in MySQL that your models.py files define. All that is needed is that a user and password be set up with access to the specific database Django will interact with. These parameters get stored in the `settings.py` file of the main application as shown on lines 92 to 94 below.
 
-![](django models cropped.png)
+![Fig 6](django_models_cropped.png)
 
 In order to get Django to set up the necessary tables run (where guest_handler can be replaced by the app you want to create the necessary models for)
 
