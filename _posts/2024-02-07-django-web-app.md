@@ -34,19 +34,19 @@ At its core, Django follows the Model-View-Template (MVT) architectural pattern,
 
 Django also includes a built-in authentication system, form handling, URL routing, template engine, and admin interface, among many other features. Its robust security features, including protection against common web vulnerabilities like SQL injection, cross-site scripting (XSS), and cross-site request forgery (CSRF), make it suitable for developing secure web applications.
 
-![](/img/django_structure_cropped.png)
+![](https://github.com/ellendmk/ellendmk.github.io/blob/gh-pages/_posts/img/django_structure_cropped.png?raw=true)
 
 # Final product
 
 This web app was hosted on an AWS EC2 instance using Nginx and gunicorn. The site isn't currently live so below are some screenshots to give you a sense of what it looked like in action.
 
-![](/img/wedding_site_cropped.png)
+![](https://github.com/ellendmk/ellendmk.github.io/blob/gh-pages/_postsimg/wedding_site_cropped.png?raw=true)
 
-![](/img/RSVP_cropped.png)
+![](https://github.com/ellendmk/ellendmk.github.io/blob/gh-pages/_posts/img/RSVP_cropped.png?raw=true)
 
-![](/img/invite.png)
+![](https://github.com/ellendmk/ellendmk.github.io/blob/gh-pages/_posts/img/invite.png?raw=true)
 
-![](/img/rsvp_view_cropped.png)
+![](https://github.com/ellendmk/ellendmk.github.io/blob/gh-pages/_posts/img/RSVP_cropped.png?raw=true)
 
 Below I dive into a little more detail on the unique aspects of this project.
 
@@ -75,7 +75,7 @@ The `families` model has the below fields
 
 Django automatically creates the necessary tables in MySQL that your models.py files define. All that is needed is that a user and password be set up with access to the specific database Django will interact with. These parameters get stored in the `settings.py` file of the main application as shown on lines 92 to 94 below.
 
-![](/_posts/img/django_models_cropped.png)
+![](https://github.com/ellendmk/ellendmk.github.io/blob/gh-pages/_posts/img/django_models_cropped.png?raw=true)
 
 In order to get Django to set up the necessary tables run (where guest_handler can be replaced by the app you want to create the necessary models for)
 
