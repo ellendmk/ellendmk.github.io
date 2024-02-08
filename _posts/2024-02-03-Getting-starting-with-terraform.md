@@ -4,6 +4,8 @@ title: Getting started with terraform for free using AWS
 date: 2024-02-03 10:18:00
 ---
 
+Terraform is a powerful tool that can help automatically provision various types of infrastructure for software projects. In this post we'll dive into what it is, why its useful and how to get started with a simple example using the free tier offering from AWS.
+
 # What is terraform?
 
 Terraform is an open-source infrastructure as code software tool created by HashiCorp. It enables users to define and provision infrastructure using a declarative configuration language. With Terraform, you can manage various resources such as virtual machines, networks, storage, and more across multiple cloud providers like AWS, Azure, and Google Cloud Platform, as well as on-premises environments. Its primary objective is to automate the deployment and management of infrastructure, allowing for efficient scalability, version control, and reproducibility of infrastructure configurations.
