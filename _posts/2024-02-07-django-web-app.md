@@ -2,6 +2,7 @@
 layout: post
 title: A Django web-app for wedding invites
 date: 2024-02-07 10:18:00
+comments: true
 ---
 
 In this post I'll take you through the web app I built using Django to handle my wedding invites and RSVP tracking. It was great fun to build! You can check out the code on [github](https://github.com/ellendmk/django-wedding-site).
