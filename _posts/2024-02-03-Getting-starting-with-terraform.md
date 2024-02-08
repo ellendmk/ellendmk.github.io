@@ -54,24 +54,22 @@ I am running Linux Mint 21.3 and will outline the steps needed to set this up on
 
 Hashicorp has details on how to install terraform for different operating systems but for Linux the latest release was not present on the site they point you to (https://apt.releases.hashicorp.com). Instead, I followed the below.
 
-1. Find the latest version number by visiting 
-    ```console
-    https://www.terraform.io/downloads.html
-    ```
+1. Find the latest version number by visiting `https://www.terraform.io/downloads.html`.
 2. Download the latest version of terraform
-    ```console
-    wget https://releases.hashicorp.com/terraform/<version>/terraform_<version>_linux_amd64.zip
+    ```
+    wget https://releases.hashicorp.com/terraform/<version>
+    terraform_<version>_linux_amd64.zip
     ```
 4. Extract archive
-    ```console
+    ```
     unzip terraform_<version>_linux_amd64.zip
     ```
 5. Move the executable into a directory where executable will be found by system
-    ```console
+    ```
     sudo mv terraform /usr/local/bin/
     ```
 6. Test installation has been successful by running
-    ```console
+    ```
     terraform --version
     ```
 
@@ -315,16 +313,16 @@ As mentioned above terraform can be used to spin up infrastructure for a number 
         ```
 11. You will be prompted to enter your values for access_key and access_secret as it runs. You can copy and paste these into the terminal window.
 12. There is a better way to manage these variables rather than pasting them into a terminal window. If you set up a variables file named `terraform.tfvars` this will allow you to set values for vars that terraform can use at runtime.
-    ```console
+    ```
     aws_secret_key = "YOUR_SECRET_KEY_VALUE"
     aws_access_key = "YOUR_ACCESS_KEY_VALUE"
     ```
     Now we can tell terraform to run with this vars file as follows
-    ```console
+    ```
     terraform plan -var-file="terraform.tfvars"
     ```
 13. If that runs without issue you can now actually execute the terraform code using `apply` and watch the magic happen in your AWS console
-    ```console
+    ```
     terraform apply -var-file="terraform.tfvars"
     ```
 14. You should now see a new EC2 instance appear in the location specified with the relevant AMI and instance type.
