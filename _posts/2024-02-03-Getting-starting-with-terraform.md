@@ -15,15 +15,10 @@ Terraform is an open-source infrastructure as code software tool created by Hash
 Terraform is highly useful for several reasons:
 
 1. **Infrastructure as Code (IaC)**: Terraform allows you to define your infrastructure using code, enabling you to version control, review, and collaborate on infrastructure changes in the same way as application code. This makes infrastructure provisioning more predictable, repeatable, and scalable.
-
 2. **Multi-Cloud Provisioning**: Terraform supports multiple cloud providers, allowing you to manage infrastructure across various environments, including public clouds like AWS, Azure, and Google Cloud Platform, as well as private clouds and on-premises data centers. This flexibility reduces vendor lock-in and enables hybrid and multi-cloud strategies.
-
 3. **Automation**: With Terraform, you can automate the deployment and management of infrastructure, reducing manual intervention, human error, and the time required for provisioning and scaling resources. This automation enhances efficiency and reliability in managing infrastructure.
-
 4. **State Management**: Terraform maintains a state file that keeps track of the current state of your infrastructure. This state allows Terraform to understand what resources are currently deployed and to determine the changes needed to match the desired configuration. State management ensures that Terraform can accurately provision and manage resources without causing conflicts or unintended changes.
-
 5. **Modularity and Reusability**: Terraform modules enable you to encapsulate and reuse infrastructure configurations, making it easier to manage complex environments. Modules promote modularity, allowing you to abstract common patterns and share infrastructure components across projects or teams.
-
 6. **Scalability and Flexibility**: Terraform is designed to scale with your infrastructure needs, whether you're managing a small application or a large-scale distributed system. Its flexibility allows you to adapt to changing requirements and quickly provision resources as your application grows.
 
 Overall, Terraform provides a powerful set of tools and capabilities for managing infrastructure, offering efficiency, consistency, and agility in provisioning and maintaining cloud and on-premises environments.
@@ -33,13 +28,9 @@ Overall, Terraform provides a powerful set of tools and capabilities for managin
 Let's consider a typical web application architecture deployed on a cloud infrastructure like AWS. Here's a simplified example of such an architecture and where Terraform fits in:
 
 1. **Frontend Layer**: This layer consists of the user interface components of the web application, typically hosted on a web server such as Apache HTTP Server or Nginx. The frontend serves static content (HTML, CSS, JavaScript) and communicates with the backend via HTTP requests.
-
 2. **Backend Layer**: The backend layer handles business logic, data processing, and interaction with databases or other external services. It includes components like application servers (e.g., Node.js, Django, Flask) and databases (e.g., MySQL, PostgreSQL, MongoDB).
-
 3. **Data Storage Layer**: This layer encompasses various data storage solutions required by the application, such as relational databases, NoSQL databases, object storage (e.g., Amazon S3), caching services (e.g., Redis), or message queues (e.g., Amazon SQS).
-
 4. **Networking Infrastructure**: Networking components like virtual private clouds (VPCs), subnets, security groups, load balancers, and DNS configurations are necessary to ensure secure communication and high availability of the application.
-
 5. **Identity and Access Management (IAM)**: IAM controls access to cloud resources, defining user roles, permissions, and policies to enforce security measures and limit unauthorized access.
 
 Where Terraform fits in:
@@ -64,36 +55,25 @@ I am running Linux Mint 21.3 and will outline the steps needed to set this up on
 Hashicorp has details on how to install terraform for different operating systems but for Linux the latest release was not present on the site they point you to (https://apt.releases.hashicorp.com). Instead, I followed the below.
 
 1. Find the latest version number by visiting 
-
-```
-https://www.terraform.io/downloads.html
-```
+    ```
+    https://www.terraform.io/downloads.html
+    ```
 2. Download the latest version of terraform
-
-```
-wget https://releases.hashicorp.com/terraform/<version>/terraform_<version>_linux_amd64.zip
-```
+    ```
+    wget https://releases.hashicorp.com/terraform/<version>/terraform_<version>_linux_amd64.zip
+    ```
 4. Extract archive
-
-```
-unzip terraform_<version>_linux_amd64.zip
-```
-
+    ```
+    unzip terraform_<version>_linux_amd64.zip
+    ```
 5. Move the executable into a directory where executable will be found by system
-
-```
-sudo mv terraform /usr/local/bin/
-```
-
+    ```
+    sudo mv terraform /usr/local/bin/
+    ```
 6. Test installation has been successful by running
-```
-terraform --version
-```
-
-
-- how to set up terraform to spin up a free tier EC2 instance 
-- need to create access keys
-- use TF_VAR_names to set access key and access secret
+    ```
+    terraform --version
+    ```
 
 # Example using AWS Free Tier
 
@@ -172,6 +152,108 @@ As mentioned above terraform can be used to spin up infrastructure for a number 
         ```
         # EC2 instance Security Group
         resource "aws_security_group" "ec2_security_group" {
+            name        = "ec2_security_group"
+            description = "Allow SSH inbound traffic"
+        
+            # Allow SSH inbound for allowed IP addressess
+            ingress {
+                from_port   = 22
+                to_port     = 22
+                protocol    = "tcp"
+                cidr_blocks = tolist([])
+            }
+
+            # TCP port 80 for HTTP
+            ingress {
+                from_port   = 80
+                to_port     = 80
+                protocol    = "tcp"
+                cidr_blocks = ["0.0.0.0/0"] # allows all traffic
+            }
+
+            # TCP port 443 for HTTPS
+            ingress {
+                from_port   = 443
+                to_port     = 443
+                protocol    = "tcp"
+                cidr_blocks = ["0.0.0.0/0"]
+            }
+
+            # Outbound HTTP to anywhere
+            egress {
+                from_port   = 0
+                to_port     = 0
+                protocol    = "-1"
+                cidr_blocks = ["0.0.0.0/0"]
+            }
+        }
+        ```
+
+     6. **Resource Block - tls_private_key**:     This block generates an RSA private key of size 4096 bits using the TLS provider.
+        ```
+        # Create RSA key of size 4096 bits
+        resource "tls_private_key" "tf_ec2_key" {
+            algorithm = "RSA"
+            rsa_bits  = 4096
+        }
+        ```
+    7. **Resource Block - local_file**: This block creates a local file named "tf_ec2_key.pem" containing the RSA private key generated in the previous block.
+        ```
+        # Create local file
+        resource "local_file" "tf_ec2_key" {
+            content  = tls_private_key.tf_ec2_key.private_key_pem
+            filename = "${path.module}/tf_ec2_key.pem"
+        }
+        ```
+    8. **Resource Block - aws_key_pair**:     This block creates an AWS key pair resource named "tf_ec2_key" using the RSA public key generated previously.
+
+        ```
+        # Create AWS key pair
+            resource "aws_key_pair" "tf_ec2_key" {
+            key_name   = "tf_ec2_key"
+            public_key = tls_private_key.tf_ec2_key.public_key_openssh
+        }
+
+        ```
+
+
+9. Putting this all together we get the below `main.tf` file
+
+    ```
+    terraform {
+        required_providers {
+            aws = {
+            source  = "hashicorp/aws"
+            version = "~> 4.36"
+            }
+        }
+    }
+
+    # Define variables for AWS access key and secret key
+    variable "aws_access_key" {
+        type        = string
+        description = "Type in your AWS access key"
+    }
+    variable "aws_secret_key" {
+        type        = string
+        description = "Type in your AWS secret key"
+    }
+
+    # Configure provider
+    provider "aws" {
+        region     = "eu-west-2"
+        access_key = var.aws_access_key
+        secret_key = var.aws_secret_key
+    }
+
+    # Create aws_instance resource named 'example'
+    resource "aws_instance" "example" {
+        ami  = "ami-0264a899947b7d068" # Where to find this?
+        instance_type = "t3.micro"     # Where to find this?
+    }
+
+    # EC2 instance Security Group
+    resource "aws_security_group" "ec2_security_group" {
         name        = "ec2_security_group"
         description = "Allow SSH inbound traffic"
         
@@ -206,126 +288,24 @@ As mentioned above terraform can be used to spin up infrastructure for a number 
             protocol    = "-1"
             cidr_blocks = ["0.0.0.0/0"]
         }
-        }
-        ```
-
-     6. **Resource Block - tls_private_key**:     This block generates an RSA private key of size 4096 bits using the TLS provider.
-        ```
-        # Create RSA key of size 4096 bits
-        resource "tls_private_key" "tf_ec2_key" {
-        algorithm = "RSA"
-        rsa_bits  = 4096
-        }
-        ```
-    7. **Resource Block - local_file**: This block creates a local file named "tf_ec2_key.pem" containing the RSA private key generated in the previous block.
-        ```
-        # Create local file
-        resource "local_file" "tf_ec2_key" {
-        content  = tls_private_key.tf_ec2_key.private_key_pem
-        filename = "${path.module}/tf_ec2_key.pem"
-        }
-        ```
-    8. **Resource Block - aws_key_pair**:     This block creates an AWS key pair resource named "tf_ec2_key" using the RSA public key generated previously.
-
-        ```
-        # Create AWS key pair
-        resource "aws_key_pair" "tf_ec2_key" {
-        key_name   = "tf_ec2_key"
-        public_key = tls_private_key.tf_ec2_key.public_key_openssh
-        }
-
-        ```
-
-
-9. Putting this all together we get the below `main.tf` file
-
-    ```
-    terraform {
-    required_providers {
-        aws = {
-        source  = "hashicorp/aws"
-        version = "~> 4.36"
-        }
-    }
-    }
-
-    # Define variables for AWS access key and secret key
-    variable "aws_access_key" {
-        type        = string
-        description = "Type in your AWS access key"
-    }
-    variable "aws_secret_key" {
-        type        = string
-        description = "Type in your AWS secret key"
-    }
-
-    # Configure provider
-    provider "aws" {
-    region     = "eu-west-2"
-    access_key = var.aws_access_key
-    secret_key = var.aws_secret_key
-    }
-
-    # Create aws_instance resource named 'example'
-    resource "aws_instance" "example" {
-    ami  = "ami-0264a899947b7d068" # Where to find this?
-    instance_type = "t3.micro"     # Where to find this?
-    }
-
-    # EC2 instance Security Group
-    resource "aws_security_group" "ec2_security_group" {
-    name        = "ec2_security_group"
-    description = "Allow SSH inbound traffic"
-    
-    # Allow SSH inbound for allowed IP addressess
-    ingress {
-        from_port   = 22
-        to_port     = 22
-        protocol    = "tcp"
-        cidr_blocks = tolist([])
-    }
-
-    # TCP port 80 for HTTP
-    ingress {
-        from_port   = 80
-        to_port     = 80
-        protocol    = "tcp"
-        cidr_blocks = ["0.0.0.0/0"] # allows all traffic
-    }
-
-    # TCP port 443 for HTTPS
-    ingress {
-        from_port   = 443
-        to_port     = 443
-        protocol    = "tcp"
-        cidr_blocks = ["0.0.0.0/0"]
-    }
-
-    # Outbound HTTP to anywhere
-    egress {
-        from_port   = 0
-        to_port     = 0
-        protocol    = "-1"
-        cidr_blocks = ["0.0.0.0/0"]
-    }
     }
 
     # Create RSA key of size 4096 bits
     resource "tls_private_key" "tf_ec2_key" {
-    algorithm = "RSA"
-    rsa_bits  = 4096
+        algorithm = "RSA"
+        rsa_bits  = 4096
     }
 
     # Create local file
     resource "local_file" "tf_ec2_key" {
-    content  = tls_private_key.tf_ec2_key.private_key_pem
-    filename = "${path.module}/tf_ec2_key.pem"
+        content  = tls_private_key.tf_ec2_key.private_key_pem
+        filename = "${path.module}/tf_ec2_key.pem"
     }
 
     # Create AWS key pair
     resource "aws_key_pair" "tf_ec2_key" {
-    key_name   = "tf_ec2_key"
-    public_key = tls_private_key.tf_ec2_key.public_key_openssh
+        key_name   = "tf_ec2_key"
+        public_key = tls_private_key.tf_ec2_key.public_key_openssh
     }
     ```
 
