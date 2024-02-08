@@ -39,7 +39,7 @@ Django also includes a built-in authentication system, form handling, URL routin
 
 This web app was hosted on an AWS EC2 instance using Nginx and gunicorn. The site isn't currently live so below are some screenshots to give you a sense of what it looked like in action.
 
-![Fig 2](wedding site cropped.png)
+![Fig 2](wedding_site_cropped.png)
 
 
 ![Fig 3](RSVP_cropped.png)
