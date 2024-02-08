@@ -81,7 +81,7 @@ Breaking this down,
 
 You can test this at [regex101.com](https://regex101.com/). In he image below we can see the lines that begin with our currency strings are correct and those with preceding characters don't.
 
-![](image-1.png)
+![](https://github.com/ellendmk/ellendmk.github.io/blob/gh-pages/_posts/img/image-1.png?raw=true)
 
 
 ## 2. Leading whole numbers
@@ -102,7 +102,7 @@ Lets break this down into a few pieces
 - With c. we need 1 digit between 1 and 9 `[1-9]{1}` (this will ensure no leading zeroes in our whole numbers).
 - In d. we allow values between 0 and 9 `[0-9]` with between 0 and 2 digits (`{0,2}`) (this ensures we can have values of 1, 10 or 100 appearing as valid).
 
-![](image.png)
+![](https://github.com/ellendmk/ellendmk.github.io/blob/gh-pages/_posts/img/image.png?raw=true)
 
 ## 3. Thousands separated whole numbers
 
@@ -114,7 +114,7 @@ Or value may be large and need many thousand separators but it may need none. Wr
 
 Within that group we know we need a comma `,` followed by exactly 3 `{3}` values 0 to 9 `[0-9]`.
 
-![](image-2.png)
+![](https://github.com/ellendmk/ellendmk.github.io/blob/gh-pages/_posts/img/image-2.png?raw=true)
 
 ## 4.Decimals
 
@@ -125,7 +125,7 @@ Decimals may also not exist in our string so again we use the `*`.
 Here we need a full stop `.` followed by two digits. The first digit must be between 1 and 9 `[1-9]{1}` and the second between 0 and 9 `[0-9]{1}`.
 We end our regex with a `$` to show this is the end of the string.
 
-![](image-3.png)
+![](https://github.com/ellendmk/ellendmk.github.io/blob/gh-pages/_posts/img/image-3.png?raw=true)
 
 # Conclusion
 
