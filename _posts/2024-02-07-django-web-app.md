@@ -34,7 +34,7 @@ At its core, Django follows the Model-View-Template (MVT) architectural pattern,
 
 Django also includes a built-in authentication system, form handling, URL routing, template engine, and admin interface, among many other features. Its robust security features, including protection against common web vulnerabilities like SQL injection, cross-site scripting (XSS), and cross-site request forgery (CSRF), make it suitable for developing secure web applications.
 
-![](https://github.com/ellendmk/ellendmk.github.io/blob/gh-pages/_posts/img/django_structure_cropped.png)
+![](/img/django_structure_cropped.png)
 
 # Final product
 
